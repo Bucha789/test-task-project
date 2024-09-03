@@ -1,0 +1,2 @@
+# Countdown Timer
+This project pretends to create a countdown timer that can be used in different situations. The user can set the time and the timer will start counting down. When the time is up, the timer will play a sound to alert the user.
