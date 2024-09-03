@@ -1,9 +1,12 @@
 import { createRoot } from "react-dom/client";
-import { App } from "./App";
+//using bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
+//using custom css
+import './index.css';
+import { Router } from "./router";
 
 const node = document.getElementById("root");
 
 if (node) {
-  createRoot(node).render(<App />);
+  createRoot(node).render(<Router/>);
 }
