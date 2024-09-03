@@ -1,5 +1,10 @@
+import { Tasks } from "../components/Tasks"
+
 export const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>
+      <h1>Task Done</h1>
+      <Tasks />
+    </div>
   )
 }
