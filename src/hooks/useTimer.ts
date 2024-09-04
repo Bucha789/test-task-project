@@ -8,8 +8,8 @@ type TimerOptions = {
   playSound?: boolean
 }
 
-export const useTimer = (duration: number, options?: TimerOptions) => {
-  const [time, setTime] = useState(duration);
+export const useTimer = (durationInSeconds: number, options?: TimerOptions) => {
+  const [time, setTime] = useState(durationInSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const interval = useRef<NodeJS.Timeout | null>(null);
   const start = useCallback(() => {
@@ -37,9 +37,9 @@ export const useTimer = (duration: number, options?: TimerOptions) => {
     if (interval.current) {
       clearInterval(interval.current);
       setIsRunning(false);
-      setTime(duration);
+      setTime(durationInSeconds);
     }
-  }, [duration])
+  }, [durationInSeconds])
 
   useEffect(() => {
     if (options?.onChangeTimer) {

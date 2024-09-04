@@ -3,6 +3,7 @@ import { cleanEditingTask, create, modify } from "../../store/slices/tasksSlice"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { getTimeFromSeconds } from "../../utils/time"
+import { HOURS_IN_SECONDS, LONG_TIME, MAX_TIME_INPUT_VALUE, MAX_TIME_ALLOWED, MEDIUM_TIME, MINUTES_IN_SECONDS, SHORT_TIME } from "../../constants"
 
 export type FormState = {
   description: string
@@ -42,17 +43,18 @@ export const TaskForm = () => {
 
   const handleSubmitValues: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
+    const newDuration = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
     if (editingTask) {
       dispatch(modify({
         description: formState.description,
-        duration: formState.time.hours * 3600 + formState.time.minutes * 60 + formState.time.seconds,
+        duration: newDuration,
         id: editingTask.id
       }))
       return dispatch(cleanEditingTask())
     }
     dispatch(create({
       description: formState.description,
-      duration: formState.time.hours * 3600 + formState.time.minutes * 60 + formState.time.seconds
+      duration: newDuration
     }))
     setFormState(initialState)
   }
@@ -101,8 +103,8 @@ export const TaskForm = () => {
   }, [formState])
 
   const handleErrors = useCallback(() => {
-    const currentSeconds = formState.time.hours * 3600 + formState.time.minutes * 60 + formState.time.seconds;
-    if (currentSeconds > 7200) {
+    const currentSeconds = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
+    if (currentSeconds > MAX_TIME_ALLOWED) {
       return setError('Duration must be less than 2 hours')
     }
     if (currentSeconds < 0) {
@@ -141,32 +143,32 @@ export const TaskForm = () => {
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Row>
           <Col>
-            <Button onClick={handleClickDefaultButtons(1800)} variant="success">
+            <Button onClick={handleClickDefaultButtons(SHORT_TIME)} variant="success">
               30min
             </Button>
           </Col>
           <Col>
-            <Button onClick={handleClickDefaultButtons(2700)} variant="warning">
+            <Button onClick={handleClickDefaultButtons(MEDIUM_TIME)} variant="warning">
               45min
             </Button>
           </Col>
           <Col>
-            <Button onClick={handleClickDefaultButtons(3600)} variant="danger">
+            <Button onClick={handleClickDefaultButtons(LONG_TIME)} variant="danger">
               1hr
             </Button>
           </Col>
         </Row>
         <Row>
           <Col>
-            <Form.Control onChange={handleTaskDuration('hours')} max={59} min={0} type="number" name='hours' value={time.hours} />
+            <Form.Control onChange={handleTaskDuration('hours')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='hours' value={time.hours} />
             <Form.Label>hrs</Form.Label>
           </Col>
           <Col>
-            <Form.Control onChange={handleTaskDuration('minutes')} max={59} min={0} type="number" name='minutes' value={time.minutes} />
+            <Form.Control onChange={handleTaskDuration('minutes')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='minutes' value={time.minutes} />
             <Form.Label>min</Form.Label>
           </Col>
           <Col>
-            <Form.Control onChange={handleTaskDuration('seconds')} max={59} min={0} type="number" name='seconds' value={time.seconds} />
+            <Form.Control onChange={handleTaskDuration('seconds')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='seconds' value={time.seconds} />
             <Form.Label>seg</Form.Label>
           </Col>
         </Row>

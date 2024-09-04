@@ -1,11 +1,13 @@
-export const getTimeFromSeconds = (seconds: number) => {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const sec = seconds % 60;
+import { HOURS_IN_SECONDS, MINUTES_IN_SECONDS } from "../constants";
+
+export const getTimeFromSeconds = (timeInSeconds: number) => {
+  const hours = Math.floor(timeInSeconds / HOURS_IN_SECONDS);
+  const minutes = Math.floor((timeInSeconds % MINUTES_IN_SECONDS) / 60);
+  const seconds = timeInSeconds % 60;
   return {
     hours,
     minutes,
-    seconds: sec
+    seconds
   }
 }
 

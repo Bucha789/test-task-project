@@ -1,11 +1,13 @@
+import { LONG_TIME, MEDIUM_TIME, SHORT_TIME } from "../constants";
+
 export const getTaskType = (duration: number) => {
-  if (duration === 1800) {
+  if (duration === SHORT_TIME) {
     return "short";
   }
-  if (duration === 2700) {
+  if (duration === MEDIUM_TIME) {
     return "medium";
   }
-  if (duration === 3600) {
+  if (duration === LONG_TIME) {
     return "long";
   }
   return "custom";
