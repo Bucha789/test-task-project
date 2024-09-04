@@ -14,6 +14,7 @@ export const Tasks = () => {
             <Task
               key={item.id}
               description={item.description}
+              duration={item.duration}
             />
           ))
         }
