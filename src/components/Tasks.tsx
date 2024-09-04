@@ -1,6 +1,8 @@
+import { useAppSelector } from "../store/hooks"
 import { Task } from "./Task"
 
 export const Tasks = () => {
+  const addedTasks = useAppSelector(state => state.tasks.addedTasks);
   return (
     <div className="bg-purple">
       {
@@ -8,8 +10,11 @@ export const Tasks = () => {
       }
       <div>
         {
-          Array.from({ length: 5 }).map((_, index) => (
-            <Task key={index} />
+          addedTasks.map(item => (
+            <Task
+              key={item.id}
+              description={item.description}
+            />
           ))
         }
       </div>
