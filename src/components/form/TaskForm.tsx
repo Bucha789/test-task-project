@@ -2,7 +2,7 @@ import { ChangeEvent, FormEventHandler, useCallback, useEffect, useState } from 
 import { cleanEditingTask, create, modify } from "../../store/slices/tasksSlice"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
-import { getTimeFromSeconds } from "../../utils/format"
+import { getTimeFromSeconds } from "../../utils/time"
 
 export type FormState = {
   description: string

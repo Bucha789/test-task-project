@@ -1,10 +1,10 @@
-export const getTimeFromSeconds = (seconds: number) => {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const sec = seconds % 60;
-  return {
-    hours,
-    minutes,
-    seconds: sec
-  }
+import { getTimeFromSeconds } from "./time";
+
+export const transformTimeToString = (seconds: number) => {
+  const time = getTimeFromSeconds(seconds);
+  return `${time.hours.toString().padStart(2, '0')}:${time.minutes.toString().padStart(2, '0')}:${time.seconds.toString().padStart(2, '0')}`
+}
+export const transformTimeToDisplay = (seconds: number) => {
+  const time = getTimeFromSeconds(seconds);
+  return `${time.hours.toString().padStart(2, '0')}h ${time.minutes.toString().padStart(2, '0')}m ${time.seconds.toString().padStart(2, '0')}s`
 }
