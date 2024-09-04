@@ -1,4 +1,4 @@
-import { ButtonGroup, Col, Form, Row } from "react-bootstrap";
+import { ButtonGroup, Col, Container, Form, Row } from "react-bootstrap";
 import { useAppSelector } from "../store/hooks"
 import { Task } from "./Task"
 import { ReactEventHandler, useState } from "react";
@@ -27,8 +27,8 @@ export const Tasks = () => {
 
 
   return (
-    <div className="bg-purple">
-      <Row>
+    <Container className="bg-purple">
+      <Row className="mb-5">
         <Col>
           <ButtonGroup>
             <button onClick={handleSortOrder('recent')} className="btn btn-primary">Recent first</button>
@@ -45,19 +45,21 @@ export const Tasks = () => {
           </Form.Select>
         </Col>
       </Row>
-      <div>
+      <Row>
         {
           filteredTasks.map(item => (
-            <Task
-              key={item.id}
-              id={item.id}
-              description={item.description}
-              duration={item.duration}
-              taskType={item.type}
-            />
+            <Col key={item.id} xl={4} md={6} xxl={3} sm={12} className="mb-3">
+              <Task
+                key={item.id}
+                id={item.id}
+                description={item.description}
+                duration={item.duration}
+                taskType={item.type}
+                />
+            </Col>
           ))
         }
-      </div>
-    </div>
+      </Row>
+    </Container>
   )
 }

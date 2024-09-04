@@ -1,8 +1,8 @@
-import { Button, Card } from "react-bootstrap"
-import { useAppDispatch } from "../store/hooks"
-import { markAsCompleted, registerCurrentTask, registerEditingTask, remove, updateCurrentTask } from "../store/slices/tasksSlice"
-import { useTimer } from "../hooks/useTimer"
-import { transformTimeToString } from "../utils/format"
+import { Button, Card } from 'react-bootstrap'
+import { useAppDispatch } from '../store/hooks'
+import { markAsCompleted, registerCurrentTask, registerEditingTask, remove, updateCurrentTask } from '../store/slices/tasksSlice'
+import { useTimer } from '../hooks/useTimer'
+import { transformTimeToString } from '../utils/format'
 
 
 type Props = {
@@ -21,7 +21,6 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
     },
     playSound: true
   });
-  const backgroundColor = taskType === 'short' ? 'bg-success' : taskType === 'medium' ? 'bg-warning' : 'bg-danger';
   const handleComplete = () => {
     dispatch(markAsCompleted({ id }))
     stop();
@@ -40,19 +39,19 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
   }
 
   return (
-    <Card className={backgroundColor}>
+    <Card className={`bg-${taskType}`}>
       <Card.Body>
-        <Card.Text>{description}</Card.Text>
-        <Card.Text>{duration}</Card.Text>
+        <Card.Text className='text-white'>{description}</Card.Text>
+        <Card.Text className='text-white'>{transformTimeToString(duration)}</Card.Text>
         <Button onClick={handleStartTask}>
           Start
         </Button>
         <Button onClick={stop}>
           Stop
         </Button>
-        <Button onClick={handleComplete} variant="primary">Complete</Button>
-        <Button onClick={handleDelete} variant="danger">Delete</Button>
-        <Button onClick={handleEditTask} variant="warning">Edit</Button>
+        <Button onClick={handleComplete} variant='primary'>Complete</Button>
+        <Button onClick={handleDelete} variant='danger'>Delete</Button>
+        <Button onClick={handleEditTask} variant='warning'>Edit</Button>
       </Card.Body>
     </Card>
   )

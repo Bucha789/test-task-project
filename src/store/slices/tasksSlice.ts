@@ -3,6 +3,7 @@ import type { Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 import { getTaskType } from '../../utils/tasks';
 import { Task } from '../../components/Task';
+import { generateTasks } from '../../utils/dummyData';
 
 
 export type TaskType = 'short' | 'medium' | 'long' | 'custom'
@@ -36,7 +37,7 @@ export type TasksState = {
 }
 
 const initialState: TasksState = {
-  addedTasks: [],
+  addedTasks: generateTasks(20) || [],
   currentTask: null,
   editingTask: null,
 }

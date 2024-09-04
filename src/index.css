@@ -5,3 +5,15 @@
   grid-template-columns: 200px 1fr;
   grid-template-rows: 1fr 80px;
 }
+
+.bg-short {
+  background-color: #0dab76;
+}
+
+.bg-medium {
+  background-color: #139a43;
+}
+
+.bg-long {
+  background-color: #0b5d1e;
+}
