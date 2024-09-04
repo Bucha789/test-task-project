@@ -18,7 +18,8 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
     onChangeTimer: (currentSeconds) => {
       dispatch(updateCurrentTask(currentSeconds))
       document.title = `Running - ${transformTimeToString(currentSeconds)}`
-    }
+    },
+    playSound: true
   });
   const backgroundColor = taskType === 'short' ? 'bg-success' : taskType === 'medium' ? 'bg-warning' : 'bg-danger';
   const handleComplete = () => {

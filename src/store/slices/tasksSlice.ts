@@ -87,7 +87,6 @@ export const tasksSlice = createSlice({
     },
     registerCurrentTask: (state, action: PayloadAction<TaskId>) => {
       const taskToStart = state.addedTasks.find((task) => task.id === action.payload.id) || null;
-      console.log(taskToStart)
       state.currentTask = taskToStart ? {
         ...taskToStart,
         currentDuration: taskToStart.duration
@@ -98,7 +97,6 @@ export const tasksSlice = createSlice({
     },
     updateCurrentTask: (state, action: PayloadAction<number>) => {
       if (state.currentTask) {
-        console.log(action)
         state.currentTask.currentDuration = action.payload;
       }
     }

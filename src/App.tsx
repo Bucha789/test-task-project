@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { Countdown } from "./components/Countdown"
+import { Timer } from "./components/Timer"
 import { SideMenu } from "./components/SideMenu"
 
 export const App = () => {
@@ -8,7 +8,7 @@ export const App = () => {
       <SideMenu />
       <Outlet />
       <div className="fixed-bottom bg-info-subtle">
-        <Countdown />
+        <Timer />
       </div>
     </div>
   )
