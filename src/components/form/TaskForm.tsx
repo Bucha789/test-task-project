@@ -1,7 +1,7 @@
-import { ChangeEvent, FormEventHandler, useEffect, useState } from "react"
-import { create } from "../../store/slices/tasksSlice"
+import { ChangeEvent, FormEventHandler, useCallback, useEffect, useState } from "react"
+import { cleanEditingTask, create, modify } from "../../store/slices/tasksSlice"
 import { Button, Col, Form, Row } from "react-bootstrap"
-import { useAppDispatch } from "../../store/hooks"
+import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { getTimeFromSeconds } from "../../utils/format"
 
 export type FormState = {
@@ -23,10 +23,14 @@ const initialState: FormState = {
 }
 
 export const TaskForm = () => {
-  const [formState, setFormState] = useState<FormState>(initialState);
+  const { editingTask } = useAppSelector(state => state.tasks);
+  const initialValues = editingTask ? {
+    description: editingTask.description,
+    time: getTimeFromSeconds(editingTask.duration)
+  } : initialState;
+  const [formState, setFormState] = useState<FormState>(initialValues);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  const isFormDisabled = Object.values(formState).some(item => !item);
   const { time } = formState;
 
   const handleChangeValues = (event: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +42,14 @@ export const TaskForm = () => {
 
   const handleSubmitValues: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
+    if (editingTask) {
+      dispatch(modify({
+        description: formState.description,
+        duration: formState.time.hours * 3600 + formState.time.minutes * 60 + formState.time.seconds,
+        id: editingTask.id
+      }))
+      return dispatch(cleanEditingTask())
+    }
     dispatch(create({
       description: formState.description,
       duration: formState.time.hours * 3600 + formState.time.minutes * 60 + formState.time.seconds
@@ -53,35 +65,15 @@ export const TaskForm = () => {
     })
   }
 
-  const handleTaskDuration = (type: 'min' | 'seg' | 'hr') => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleTaskDuration = (type: keyof FormState['time']) => (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value || 0);
-    if (type === 'hr') {
-      setFormState({
-        ...formState,
-        time: {
-          ...formState.time,
-          hours: value
-        }
-      })
-    }
-    if (type === 'min') {
-      setFormState({
-        ...formState,
-        time: {
-          ...formState.time,
-          minutes: value
-        }
-      })
-    }
-    if (type === 'seg') {
-      setFormState({
-        ...formState,
-        time: {
-          ...formState.time,
-          seconds: value
-        }
-      })
-    }
+    setFormState({
+      ...formState,
+      time: {
+        ...formState.time,
+        [type]: value
+      }
+    })
   }
 
   useEffect(() => {
@@ -108,14 +100,33 @@ export const TaskForm = () => {
     })
   }, [formState])
 
-  useEffect(() => {
+  const handleErrors = useCallback(() => {
     const currentSeconds = formState.time.hours * 3600 + formState.time.minutes * 60 + formState.time.seconds;
     if (currentSeconds > 7200) {
-      setError('Duration must be less than 2 hours')
-    } else {
-      setError(null)
+      return setError('Duration must be less than 2 hours')
     }
-  }, [formState.time])
+    if (currentSeconds < 0) {
+      return setError('Duration must be greater than 0')
+    }
+
+    if (!currentSeconds || !formState.description) {
+      return setError('Description and duration are required')
+    }
+
+    setError(null)
+  }, [formState])
+
+  useEffect(() => {
+    handleErrors()
+  }, [handleErrors])
+
+  useEffect(() => {
+    const initialValues = editingTask ? {
+      description: editingTask.description,
+      time: getTimeFromSeconds(editingTask.duration)
+    } : initialState;
+    setFormState(initialValues)
+  }, [editingTask])
 
   return (
     <Form onSubmit={handleSubmitValues} className="card p-4">
@@ -147,20 +158,20 @@ export const TaskForm = () => {
         </Row>
         <Row>
           <Col>
-            <Form.Control onChange={handleTaskDuration('hr')} max={59} min={0} type="number" name='hours' value={time.hours} />
+            <Form.Control onChange={handleTaskDuration('hours')} max={59} min={0} type="number" name='hours' value={time.hours} />
             <Form.Label>hrs</Form.Label>
           </Col>
           <Col>
-            <Form.Control onChange={handleTaskDuration('min')} max={59} min={0} type="number" name='minutes' value={time.minutes} />
+            <Form.Control onChange={handleTaskDuration('minutes')} max={59} min={0} type="number" name='minutes' value={time.minutes} />
             <Form.Label>min</Form.Label>
           </Col>
           <Col>
-            <Form.Control onChange={handleTaskDuration('seg')} max={59} min={0} type="number" name='seconds' value={time.seconds} />
+            <Form.Control onChange={handleTaskDuration('seconds')} max={59} min={0} type="number" name='seconds' value={time.seconds} />
             <Form.Label>seg</Form.Label>
           </Col>
         </Row>
       </Form.Group>
-      <Button disabled={isFormDisabled || Boolean(error)} variant="primary" type="submit">
+      <Button disabled={Boolean(error)} variant="primary" type="submit">
         Submit
       </Button>
     </Form>
