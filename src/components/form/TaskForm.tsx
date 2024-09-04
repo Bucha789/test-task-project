@@ -118,7 +118,7 @@ export const TaskForm = () => {
   }, [formState.time])
 
   return (
-    <Form onSubmit={handleSubmitValues}>
+    <Form onSubmit={handleSubmitValues} className="card p-4">
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Description</Form.Label>
         <Form.Control onChange={handleChangeValues} type="text" name='description' placeholder="Enter Description" value={formState.description}/>

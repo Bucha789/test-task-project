@@ -48,7 +48,7 @@ export const tasksSlice = createSlice({
         task.duration = duration;
       }
     },
-    delete: (state, action: PayloadAction<TaskId>) => {
+    remove: (state, action: PayloadAction<TaskId>) => {
       //delete an existing task
       state.addedTasks = state.addedTasks.filter(item => item.id !== action.payload.id)
     },
@@ -64,6 +64,6 @@ export const tasksSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { create } = tasksSlice.actions
+export const { create, markAsCompleted, modify, remove } = tasksSlice.actions
 
 export default tasksSlice.reducer
