@@ -8,3 +8,8 @@ export const getTimeFromSeconds = (seconds: number) => {
     seconds: sec
   }
 }
+
+export const transformTimeToString = (seconds: number) => {
+  const time = getTimeFromSeconds(seconds);
+  return `${time.hours.toString().padStart(2, '0')}:${time.minutes.toString().padStart(2, '0')}:${time.seconds.toString().padStart(2, '0')}`
+}
