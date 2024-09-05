@@ -1,8 +1,6 @@
 .main__container {
   min-height: 100vh;
   position: relative;
-  display: grid;
-  grid-template-rows: 80px 1fr 80px;
 }
 
 .bg-short {

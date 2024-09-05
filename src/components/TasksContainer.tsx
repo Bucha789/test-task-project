@@ -35,7 +35,7 @@ export const TaskListContainer = () => {
   }
 
   return (
-    <Container className="bg-purple">
+    <Container>
       <Row className="mb-5">
         <Col>
           <ButtonGroup>
@@ -56,9 +56,9 @@ export const TaskListContainer = () => {
         {
           Object.keys(groupedTasks).map(date => (<Row className="mb-3" key={date}>
             <div className="mb-2">{displayTimeAgo(date)}</div>
-            <Row className="container-fluid">
+            <div className="p-0 d-flex gap-3 flex-wrap">
               <TaskGroup tasks={groupedTasks[date]} view={view} />
-            </Row>
+            </div>
           </Row>
           ))
         }

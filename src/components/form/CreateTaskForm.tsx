@@ -126,10 +126,10 @@ export const CreateTaskForm = () => {
           <Col xl={3} md={5} sm={12} className="mb-3">
             <DefaultButtons onClick={handleClickDefaultButtons} />
           </Col>
-          <Col xl={4} md={8} sm={12}>
+          <Col xl={4} md={8} sm={12} className="mb-3">
             <TimeInputs onChangeTaskDuration={handleTaskDuration} time={time} />
           </Col>
-          <Col xl={5} md={12} sm={12} className="d-flex justify-content-end">
+          <Col xl={5} md={12} sm={12} className="d-flex">
             <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3">
               Create Task
             </Button>

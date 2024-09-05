@@ -61,12 +61,12 @@ export const Timer = () => {
 
   return currentTask ? (
     <div>
-      <Row className="d-flex justify-content-between">
-        <Col>
+      <Row>
+        <Col sm={12} xl={9} className="my-2 mx-3">
           <div>{currentTask.description}</div>
         </Col>
-        <Col xs={3}>
-          <Stack direction="horizontal" gap={3}>
+        <Col sm={12} xl={3} className="my-2 mx-3">
+          <Stack direction="horizontal" gap={3} className="flex-wrap">
             <div>{transformTimeToDisplay(currentTask.currentDuration)}</div>
             <Button onClick={handleCompleteTask} variant='success'>
               <BsCheck />
@@ -87,5 +87,5 @@ export const Timer = () => {
       </Row>
       <ProgressBar striped now={calculateTimeProgress(currentTask.currentDuration, currentTask.duration)} />
     </div>
-  ) : (<div className="text-center fst-italic">There's nothing here. Please create a task to start the magic ;).</div>)
+  ) : (<div className="container text-center py-3 px-2">There's nothing here. Please create a task to start the magic ;).</div>)
 }

@@ -53,7 +53,7 @@ export const TaskItem = ({ description, duration, id, taskType, initializeTimer,
   return (
     <Card className={`bg-${taskType}`}>
       <Card.Body>
-        <Stack direction={directionSelected} className='justify-content-between'>
+        <Stack direction={directionSelected} className='justify-content-between flex-wrap'>
           <Card.Text className='text-white'>{description}</Card.Text>
           <Stack gap={4} direction='horizontal'>
             <Card.Subtitle className='text-white text-opacity-75'>{transformTimeToString(duration)}</Card.Subtitle>
