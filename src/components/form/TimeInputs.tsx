@@ -15,7 +15,7 @@ export const TimeInputs = ({ onChangeTaskDuration, time }: Props) => {
     <Stack direction="horizontal" gap={2}>
       {/* <Form.Control onChange={onChangeTaskDuration('hours')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='hours' value={time.hours} />
       <Form.Label>hrs</Form.Label> */}
-      <Form.Control onChange={onChangeTaskDuration('minutes')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='minutes' value={time.minutes} />
+      <Form.Control onChange={onChangeTaskDuration('minutes')} max={120} min={0} type="number" name='minutes' value={time.minutes} />
       <Form.Label>min</Form.Label>
       <Form.Control onChange={onChangeTaskDuration('seconds')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='seconds' value={time.seconds} />
       <Form.Label>seg</Form.Label>

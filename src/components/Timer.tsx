@@ -5,7 +5,7 @@ import { calculateTimeProgress } from "../utils/time";
 import { useEffect, useState } from "react";
 import { BsArrowRepeat, BsCheck, BsFillPauseFill, BsPlayFill, BsStopFill } from "react-icons/bs";
 import { reproduceAudio } from "../utils";
-import audio from '../../public/clock-alarm-8761.mp3';
+import audio from '/clock-alarm-8761.mp3';
 import { cleanTaskInTimer, reset, startGlobalTimer, stopGlobalTimer } from "../store/slices/timerSlice";
 import { markAsCompleted } from "../store/slices/tasksSlice";
 
@@ -56,16 +56,17 @@ export const Timer = () => {
       document.title = 'Time is up!'
       reproduceAudio(audio);
       dispatch(cleanTaskInTimer())
+      dispatch(markAsCompleted({ id: currentTask.id }))
     }
   }, [currentTask, dispatch])
 
   return currentTask ? (
     <div>
       <Row>
-        <Col sm={12} xl={9} className="my-2 mx-3">
+        <Col sm={12} md={5} xl={8} className="my-2 mx-3">
           <div>{currentTask.description}</div>
         </Col>
-        <Col sm={12} xl={3} className="my-2 mx-3">
+        <Col sm={12} md={5} xl={3} className="my-2 mx-3">
           <Stack direction="horizontal" gap={3} className="flex-wrap">
             <div>{transformTimeToDisplay(currentTask.currentDuration)}</div>
             <Button onClick={handleCompleteTask} variant='success'>

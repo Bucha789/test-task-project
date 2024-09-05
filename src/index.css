@@ -1,6 +1,7 @@
 .main__container {
   min-height: 100vh;
   position: relative;
+  padding: 2rem 0;
 }
 
 .bg-short {

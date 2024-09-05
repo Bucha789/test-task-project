@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { getTaskType } from '../../utils/tasks';
 import { generateTasks } from '../../utils/dummyData';
 
-
 export type TaskType = 'short' | 'medium' | 'long' | 'custom'
 
 export type Task = {
@@ -34,7 +33,7 @@ export type TasksState = {
 }
 
 const initialState: TasksState = {
-  addedTasks: generateTasks(20) || [],
+  addedTasks: generateTasks(50) || [],
 }
 
 export const tasksSlice = createSlice({

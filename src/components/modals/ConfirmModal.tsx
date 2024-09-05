@@ -1,21 +1,15 @@
-
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal } from "react-bootstrap"
 
 type Props = {
   show: boolean
   handleClose: () => void
-  title: string
   text: string
+  title:  string
 }
 
-export const AlertModal = ({
-  show,
-  handleClose,
-  text,
-  title
-}: Props) => {
+export const ConfirmDeleteModal = ({ show, handleClose, text, title }: Props) => {
   return (
-      <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
@@ -28,6 +22,5 @@ export const AlertModal = ({
         </Button>
       </Modal.Footer>
     </Modal>
-
   )
 }

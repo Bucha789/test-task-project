@@ -79,7 +79,7 @@ export const CreateTaskForm = () => {
           }
         })
       }
-      if (value > 59) {
+      if (value > 120) {
         setFormState({
           ...formState,
           time: {
@@ -129,8 +129,8 @@ export const CreateTaskForm = () => {
           <Col xl={4} md={8} sm={12} className="mb-3">
             <TimeInputs onChangeTaskDuration={handleTaskDuration} time={time} />
           </Col>
-          <Col xl={5} md={12} sm={12} className="d-flex">
-            <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3">
+          <Col xl={5} md={12} sm={12} className="d-flex justify-content-start align-items-center">
+            <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3 p-2">
               Create Task
             </Button>
           </Col>

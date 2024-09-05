@@ -12,7 +12,7 @@ export const generateTasks = (n: number) => {
       description: faker.lorem.sentence(),
       duration,
       type,
-      createdAt: faker.date.recent({days: 7}).toISOString(),
+      createdAt: faker.date.recent({days: 6}).toISOString(),
       completed: true,
     }
     tasks.push(task);

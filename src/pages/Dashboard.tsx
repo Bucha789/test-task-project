@@ -8,7 +8,6 @@ export const Dashboard = () => {
       <div className="mb-5">
         <CreateTaskForm />
       </div>
-      <h2>Recent tasks</h2>
       <div className="mb-5">
         <TaskListContainer />
       </div>
