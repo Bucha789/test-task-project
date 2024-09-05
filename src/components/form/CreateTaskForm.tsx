@@ -49,6 +49,16 @@ export const CreateTaskForm = () => {
   }
 
   const handleClickDefaultButtons = (seconds: number) => () => {
+    if (seconds === HOURS_IN_SECONDS) {
+      return setFormState({
+        ...formState,
+        time: {
+          hours: 0,
+          minutes: 60,
+          seconds: 0
+        }
+      })
+    }
     const time = getTimeFromSeconds(seconds);
     setFormState({
       ...formState,
@@ -66,30 +76,6 @@ export const CreateTaskForm = () => {
       }
     })
   }
-
-  useEffect(() => {
-    const timeEntries = Object.entries(formState.time);
-    timeEntries.forEach(([key, value]) => {
-      if (value < 0) {
-        setFormState({
-          ...formState,
-          time: {
-            ...formState.time,
-            [key]: 0
-          }
-        })
-      }
-      if (value > 120) {
-        setFormState({
-          ...formState,
-          time: {
-            ...formState.time,
-            [key]: 59
-          }
-        })
-      }
-    })
-  }, [formState])
 
   const handleErrors = useCallback(() => {
     const currentSeconds = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;

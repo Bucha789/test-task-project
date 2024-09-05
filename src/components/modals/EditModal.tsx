@@ -5,6 +5,7 @@ import { getTimeFromSeconds } from '../../utils/time';
 import { FormState } from '../form/CreateTaskForm';
 import { FormEvent, useState } from 'react';
 import { modify } from '../../store/slices/tasksSlice';
+import { HOURS_IN_SECONDS, MINUTES_IN_SECONDS } from '../../constants';
 
 type Props = {
   show: boolean
@@ -37,7 +38,7 @@ export const EditModal = ({ show, handleClose, taskId }: Props) => {
     event.preventDefault();
     dispatch(modify({
       description: formState.description,
-      duration: formState.time.hours * 3600 + formState.time.minutes * 60 + formState.time.seconds,
+      duration: formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds,
       id: taskId
     }))
     handleClose();

@@ -106,7 +106,7 @@ export const TaskItem = ({ description, duration, id, taskType, initializeTimer,
         handleClose={() => { setShowAlertModal(false) }}
         text={textAlertModal}
         title='Oops'
-        />
+      />
       <AlertModal
         show={showAlertModal}
         handleClose={() => { setShowAlertModal(false) }}

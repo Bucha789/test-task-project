@@ -23,9 +23,9 @@ export const displayTimeAgo = (date: string) => {
   const diffInDays = now.diff(dateToCompare, 'day');
 
   if (diffInDays === 0) {
-    return "today";
+    return "Today";
   } else if (diffInDays === 1) {
-    return "yesterday";
+    return "Yesterday";
   } else {
     return dateToCompare.fromNow();
   }

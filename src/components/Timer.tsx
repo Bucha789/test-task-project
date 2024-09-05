@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks"
 import { transformTimeToDisplay } from "../utils/format";
 import { calculateTimeProgress } from "../utils/time";
 import { useEffect, useState } from "react";
-import { BsArrowRepeat, BsCheck, BsFillPauseFill, BsPlayFill, BsStopFill } from "react-icons/bs";
+import { BsArrowRepeat, BsCheck, BsFillPauseFill, BsFillTrashFill, BsPlayFill, BsStopFill } from "react-icons/bs";
 import { reproduceAudio } from "../utils";
 import audio from '/clock-alarm-8761.mp3';
 import { cleanTaskInTimer, reset, startGlobalTimer, stopGlobalTimer } from "../store/slices/timerSlice";
@@ -13,8 +13,10 @@ export const Timer = () => {
   const { isRunning, task: currentTask } = useAppSelector(state => state.timer);
   const dispatch = useAppDispatch();
   const [isPaused, setIsPaused] = useState(false);
+  const [isStopped, setIsStopped] = useState(false);
 
   const handleStopTask = () => {
+    setIsStopped(true);
     dispatch(stopGlobalTimer());
   }
   const handleCompleteTask = () => {
@@ -47,6 +49,11 @@ export const Timer = () => {
     }, 1000);
   }
 
+  const handleCleanTask = () => {
+    dispatch(cleanTaskInTimer());
+  }
+
+
   useEffect(() => {
     if (currentTask) {
       document.title = `Focus 🚀 - ${transformTimeToDisplay(currentTask.currentDuration
@@ -72,15 +79,19 @@ export const Timer = () => {
             <Button onClick={handleCompleteTask} variant='success'>
               <BsCheck />
             </Button>
-            <Button onClick={handlePauseTask} variant='primary'>
-              {
-                isPaused ?  <BsPlayFill/> : <BsFillPauseFill/>
-              }
-            </Button>
-            <Button onClick={handleStopTask} variant='danger'>
+            {
+              !isStopped ? (<Button onClick={handlePauseTask} variant='primary'>
+                {
+                  isPaused ? <BsPlayFill /> : <BsFillPauseFill />
+                }
+              </Button>) : (<Button variant="warning" onClick={handleCleanTask}>
+                <BsFillTrashFill />
+              </Button>)
+            }
+            <Button onClick={handleStopTask} variant='danger' disabled={isStopped}>
               <BsStopFill />
             </Button>
-            <Button onClick={handleRestartTimer} variant="secondary">
+            <Button onClick={handleRestartTimer} variant="secondary" disabled={!isRunning || isPaused}>
               <BsArrowRepeat />
             </Button>
           </Stack>

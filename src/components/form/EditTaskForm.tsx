@@ -1,9 +1,10 @@
 import { Col, Container, Form, Row } from "react-bootstrap"
 import { TimeInputs } from "./TimeInputs";
 import { DefaultButtons } from "./DefaultButtons";
-import { ChangeEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, SetStateAction, useCallback, useEffect, useState } from "react";
 import { getTimeFromSeconds } from "../../utils/time";
 import { FormState } from "./CreateTaskForm";
+import { HOURS_IN_SECONDS, MAX_TIME_ALLOWED, MINUTES_IN_SECONDS } from "../../constants";
 
 
 type Props = {
@@ -12,7 +13,7 @@ type Props = {
 }
 
 export const EditTaskForm = ({ onChangeFormState, values }: Props) => {
-  const [error] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const handleChangeValues = (event: ChangeEvent<HTMLInputElement>) => {
     onChangeFormState({
       ...values,
@@ -22,6 +23,16 @@ export const EditTaskForm = ({ onChangeFormState, values }: Props) => {
 
   const handleClickDefaultButtons = (seconds: number) => () => {
     const time = getTimeFromSeconds(seconds);
+    if (seconds === HOURS_IN_SECONDS) {
+      return onChangeFormState({
+        ...values,
+        time: {
+          hours: 0,
+          minutes: 60,
+          seconds: 0
+        }
+      })
+    }
     onChangeFormState({
       ...values,
       time
@@ -39,6 +50,25 @@ export const EditTaskForm = ({ onChangeFormState, values }: Props) => {
     })
   }
 
+  const handleErrors = useCallback(() => {
+    const currentSeconds = values.time.hours * HOURS_IN_SECONDS + values.time.minutes * MINUTES_IN_SECONDS + values.time.seconds;
+    if (currentSeconds > MAX_TIME_ALLOWED) {
+      return setError('Duration must be less than 2 hours')
+    }
+    if (currentSeconds < 0) {
+      return setError('Duration must be greater than 0')
+    }
+
+    if (!currentSeconds || !values.description) {
+      return setError('Description and duration are required')
+    }
+
+    setError(null)
+  }, [values])
+
+  useEffect(() => {
+    handleErrors()
+  }, [handleErrors])
 
   return (
     <Container className="p-4 mt-5">
