@@ -5,7 +5,6 @@ import { Tasks } from "../components/Tasks"
 export const Dashboard = () => {
   return (
     <Container>
-      <h1>Create a task</h1>
       <div className="mb-5">
         <TaskForm />
       </div>

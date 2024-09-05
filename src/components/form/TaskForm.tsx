@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEventHandler, useCallback, useEffect, useState } from "react"
 import { cleanEditingTask, create, modify } from "../../store/slices/tasksSlice"
-import { Button, Col, Form, Row } from "react-bootstrap"
+import { Button, ButtonGroup, Col, Form, Row, Stack } from "react-bootstrap"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { getTimeFromSeconds } from "../../utils/time"
 import { HOURS_IN_SECONDS, LONG_TIME, MAX_TIME_INPUT_VALUE, MAX_TIME_ALLOWED, MEDIUM_TIME, MINUTES_IN_SECONDS, SHORT_TIME } from "../../constants"
@@ -131,51 +131,54 @@ export const TaskForm = () => {
   }, [editingTask])
 
   return (
-    <Form onSubmit={handleSubmitValues} className="card p-4">
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+    <Form onSubmit={handleSubmitValues} className="card p-4 mt-3">
+      <Form.Group className="mb-3">
         <Form.Label>Description</Form.Label>
-        <Form.Control onChange={handleChangeValues} type="text" name='description' placeholder="Enter Description" value={formState.description}/>
+        <Form.Control onChange={handleChangeValues} type="text" name='description' placeholder="Enter Description" value={formState.description} />
       </Form.Group>
-      <Form.Text>Duration</Form.Text>
       {
         error && <Form.Text className="text-danger">{error}</Form.Text>
       }
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Group className="mb-3">
+        <Form.Label>Duration</Form.Label>
         <Row>
-          <Col>
-            <Button onClick={handleClickDefaultButtons(SHORT_TIME)} variant="success">
-              30min
-            </Button>
+          <Col xl={3} md={5} sm={12} className="mb-3">
+            <ButtonGroup className="bg-transparent">
+              <Button onClick={handleClickDefaultButtons(SHORT_TIME)} className="bg-short">
+                30min
+              </Button>
+              <Button onClick={handleClickDefaultButtons(MEDIUM_TIME)} className="bg-medium">
+                45min
+              </Button>
+              <Button onClick={handleClickDefaultButtons(LONG_TIME)} className="bg-long">
+                1hr
+              </Button>
+            </ButtonGroup>
           </Col>
-          <Col>
-            <Button onClick={handleClickDefaultButtons(MEDIUM_TIME)} variant="warning">
-              45min
-            </Button>
-          </Col>
-          <Col>
-            <Button onClick={handleClickDefaultButtons(LONG_TIME)} variant="danger">
-              1hr
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Control onChange={handleTaskDuration('hours')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='hours' value={time.hours} />
-            <Form.Label>hrs</Form.Label>
-          </Col>
-          <Col>
-            <Form.Control onChange={handleTaskDuration('minutes')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='minutes' value={time.minutes} />
-            <Form.Label>min</Form.Label>
-          </Col>
-          <Col>
-            <Form.Control onChange={handleTaskDuration('seconds')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='seconds' value={time.seconds} />
-            <Form.Label>seg</Form.Label>
+          <Col xl={4} md={8} sm={12}>
+            <Stack direction="horizontal" gap={2}>
+                <Form.Control onChange={handleTaskDuration('hours')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='hours' value={time.hours} />
+                <Form.Label>hrs</Form.Label>
+                <Form.Control onChange={handleTaskDuration('minutes')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='minutes' value={time.minutes} />
+                <Form.Label>min</Form.Label>
+                <Form.Control onChange={handleTaskDuration('seconds')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='seconds' value={time.seconds} />
+                <Form.Label>seg</Form.Label>
+            </Stack>
           </Col>
         </Row>
       </Form.Group>
-      <Button disabled={Boolean(error)} variant="primary" type="submit">
-        Submit
-      </Button>
+      <Form.Group className="d-flex">
+        <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3">
+          {editingTask ? 'Edit Task' : 'Create Task'}
+        </Button>
+        {
+          editingTask && (
+            <Button onClick={() => dispatch(cleanEditingTask())} variant="secondary" type="button">
+              Cancel
+            </Button>
+          )
+        }
+      </Form.Group>
     </Form>
   )
 }
