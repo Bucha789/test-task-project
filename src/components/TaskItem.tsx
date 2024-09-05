@@ -18,7 +18,7 @@ type Props = {
   viewType?: 'list' | 'card'
 }
 
-export const Task = ({ description, duration, id, taskType, initializeTimer, viewType }: Props) => {
+export const TaskItem = ({ description, duration, id, taskType, initializeTimer, viewType }: Props) => {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const directionSelected = viewType === 'card' ? 'vertical' : 'horizontal';

@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap"
 import { CreateTaskForm } from "../components/form/CreateTaskForm"
-import { Tasks } from "../components/Tasks"
+import { TaskListContainer } from "../components/TasksContainer"
 
 export const Dashboard = () => {
   return (
@@ -10,7 +10,7 @@ export const Dashboard = () => {
       </div>
       <h2>Recent tasks</h2>
       <div className="mb-5">
-        <Tasks />
+        <TaskListContainer />
       </div>
     </Container>
   )

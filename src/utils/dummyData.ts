@@ -5,11 +5,13 @@ import { LONG_TIME, MEDIUM_TIME, SHORT_TIME } from "../constants";
 export const generateTasks = (n: number) => {
   const tasks = [];
   for (let i = 0; i < n; i++) {
+    const type = faker.helpers.arrayElement(['short', 'medium', 'long', 'custom']);
+    const duration = type === 'short' ? SHORT_TIME : type === 'medium' ? MEDIUM_TIME : type === 'long' ? LONG_TIME : faker.number.int({ min: 1, max: 7200 });
     const task: Task = {
       id: uuidv4(),
       description: faker.lorem.sentence(),
-      duration: faker.helpers.arrayElement([SHORT_TIME,  MEDIUM_TIME, LONG_TIME]),
-      type: faker.helpers.arrayElement(['short', 'medium', 'long']),
+      duration,
+      type,
       createdAt: faker.date.recent().toISOString(),
       completed: faker.datatype.boolean(),
     }

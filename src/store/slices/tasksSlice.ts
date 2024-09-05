@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 import { getTaskType } from '../../utils/tasks';
-import { Task } from '../../components/Task';
 import { generateTasks } from '../../utils/dummyData';
 
 
