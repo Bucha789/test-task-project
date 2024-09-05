@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { LONG_TIME, MEDIUM_TIME, SHORT_TIME } from "../constants";
 import { Task } from "../store/slices/tasksSlice";
 
@@ -27,4 +28,16 @@ export const filterTasksByDuration = (tasks: Task[], duration: string) => {
     }
     return false;
   })
+}
+
+export const groupTasksByDate = (tasks: Task[]) => {
+  return tasks.reduce((acc, item) => {
+    const date: string = dayjs(item.createdAt).format('YYYY-MM-DD') || 'unknown'
+
+    if(!acc[date]) {
+      acc[date] = []
+    }
+    acc[date].push(item)
+    return acc;
+  }, {} as Record<string, Task[]>)
 }

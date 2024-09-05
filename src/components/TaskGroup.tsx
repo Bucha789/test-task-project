@@ -34,7 +34,7 @@ export const TaskGroup = ({ tasks, view }: Props) => {
         {renderTask(item)}
       </Col>
       )
-    ) : filteredTasks.map(item => <Col key={item.id} xl={12} className="mb-3 mr-2 p-0">
+    ) : filteredTasks.map(item => <Col key={item.id} xs={12} className="mb-3 mr-2 p-0">
       {renderTask(item)}
     </Col>
     )

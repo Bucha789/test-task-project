@@ -52,7 +52,7 @@ export const TaskItem = ({ description, duration, id, taskType, initializeTimer,
   }
   const handleCompleteTask = () => {
     if (currentTask) {
-      dispatch(markAsCompleted({ id: currentTask?.id }));
+      dispatch(markAsCompleted({ id: currentTask?.id, duration: currentTask.currentDuration }));
       dispatch(stopGlobalTimer());
       dispatch(cleanTaskInTimer());
       document.title = 'Task completed'
