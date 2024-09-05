@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 import { getTaskType } from '../../utils/tasks';
-import { generateTasks } from '../../utils/dummyData';
 
 export type TaskType = 'short' | 'medium' | 'long' | 'custom'
 
@@ -35,7 +34,7 @@ export type TasksState = {
 }
 
 const initialState: TasksState = {
-  addedTasks: generateTasks(20) || [],
+  addedTasks: [],
 }
 
 export const tasksSlice = createSlice({

@@ -61,7 +61,7 @@ export const TaskListContainer = () => {
             <button onClick={() => setView('list')} className={`btn ${view === 'list' ? 'btn-primary' : 'btn-light'}`}><BsList /></button>
             <button onClick={() => setView('card')} className={`btn ${view === 'card' ? 'btn-primary' : 'btn-light'}`}><BsFillGridFill /></button>
           </ButtonGroup>
-          <Col sm={6} md={8} xl={10}>
+          <Col sm={6} md={7} xl={9}>
             <Form.Select onChange={handleFilterByDuration}>
               <option value=''>Filter by duration</option>
               <option value="short">short</option>
