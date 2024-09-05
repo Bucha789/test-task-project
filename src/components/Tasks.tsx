@@ -8,14 +8,9 @@ import { TaskType } from "../store/slices/tasksSlice";
 
 export const Tasks = () => {
   const addedTasks = useAppSelector(state => state.tasks.addedTasks);
-  const [sortOrder, setSortOrder] = useState('recent');
   const [filterByDuration, setFilterByDuration] = useState<TaskType | null>(null);
-  const taskToShow = sortOrder === 'recent' ? addedTasks.slice().reverse() : addedTasks;
-  const filteredTasks = filterByDuration ? taskToShow.filter(item => item.type === filterByDuration) : taskToShow;
-
-  const handleSortOrder = (order: 'recent' | 'old') => () => {
-    setSortOrder(order);
-  }
+  const [view, setView] = useState<'card' | 'list'>('card');
+  const filteredTasks = filterByDuration ? addedTasks.filter(item => item.type === filterByDuration) : addedTasks;
 
   const handleFilterByDuration: ReactEventHandler<HTMLSelectElement> = (event) => {
     const value = event.currentTarget.value as TaskType;
@@ -31,8 +26,8 @@ export const Tasks = () => {
       <Row className="mb-5">
         <Col>
           <ButtonGroup>
-            <button onClick={handleSortOrder('recent')} className="btn btn-primary">Recent first</button>
-            <button onClick={handleSortOrder('old')} className="btn btn-primary">Old first</button>
+            <button onClick={() => setView('card')} className={`btn ${view === 'card' ? 'btn-primary' : 'btn-light'}`}>Card</button>
+            <button onClick={() => setView('list')} className={`btn ${view === 'list' ? 'btn-primary' : 'btn-light'}`}>List</button>
           </ButtonGroup>
         </Col>
         <Col>
@@ -47,7 +42,7 @@ export const Tasks = () => {
       </Row>
       <Row>
         {
-          filteredTasks.map(item => (
+          filteredTasks.map(item => (view === 'card' ? (
             <Col key={item.id} xl={4} md={6} xxl={3} sm={12} className="mb-3">
               <Task
                 key={item.id}
@@ -55,8 +50,18 @@ export const Tasks = () => {
                 description={item.description}
                 duration={item.duration}
                 taskType={item.type}
-                />
+              />
+            </Col>) : (
+            <Col key={item.id} xs={12} className="mb-3">
+              <Task
+                key={item.id}
+                id={item.id}
+                description={item.description}
+                duration={item.duration}
+                taskType={item.type}
+              />
             </Col>
+          )
           ))
         }
       </Row>

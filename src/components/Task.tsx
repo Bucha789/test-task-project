@@ -1,6 +1,6 @@
 import { Button, Card } from 'react-bootstrap'
 import { useAppDispatch } from '../store/hooks'
-import { markAsCompleted, registerCurrentTask, registerEditingTask, remove, updateCurrentTask } from '../store/slices/tasksSlice'
+import { markAsCompleted, registerCurrentTask, remove, updateCurrentTask } from '../store/slices/tasksSlice'
 import { useTimer } from '../hooks/useTimer'
 import { transformTimeToString } from '../utils/format'
 import { EditModal } from './modals/EditModal'
@@ -34,7 +34,6 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
   }
   const handleEditTask = () => {
     setShow(true);
-    dispatch(registerEditingTask({ id }))
   }
 
   const handleStartTask = () => {

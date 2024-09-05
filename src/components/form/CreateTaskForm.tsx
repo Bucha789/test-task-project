@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEventHandler, useCallback, useEffect, useState } from "react"
-import { cleanEditingTask, create, modify } from "../../store/slices/tasksSlice"
+import { create } from "../../store/slices/tasksSlice"
 import { Button, Col, Form, Row } from "react-bootstrap"
-import { useAppDispatch, useAppSelector } from "../../store/hooks"
+import { useAppDispatch } from "../../store/hooks"
 import { getTimeFromSeconds } from "../../utils/time"
 import { HOURS_IN_SECONDS,  MAX_TIME_ALLOWED, MINUTES_IN_SECONDS } from "../../constants"
 import { DefaultButtons } from "./DefaultButtons"
@@ -26,12 +26,7 @@ const initialState: FormState = {
 }
 
 export const CreateTaskForm = () => {
-  const { editingTask } = useAppSelector(state => state.tasks);
-  const initialValues = editingTask ? {
-    description: editingTask.description,
-    time: getTimeFromSeconds(editingTask.duration)
-  } : initialState;
-  const [formState, setFormState] = useState<FormState>(initialValues);
+  const [formState, setFormState] = useState<FormState>(initialState);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const { time } = formState;
@@ -45,18 +40,10 @@ export const CreateTaskForm = () => {
 
   const handleSubmitValues: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    const newDuration = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
-    if (editingTask) {
-      dispatch(modify({
-        description: formState.description,
-        duration: newDuration,
-        id: editingTask.id
-      }))
-      return dispatch(cleanEditingTask())
-    }
+    const duration = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
     dispatch(create({
       description: formState.description,
-      duration: newDuration
+      duration
     }))
     setFormState(initialState)
   }
@@ -124,14 +111,6 @@ export const CreateTaskForm = () => {
     handleErrors()
   }, [handleErrors])
 
-  useEffect(() => {
-    const initialValues = editingTask ? {
-      description: editingTask.description,
-      time: getTimeFromSeconds(editingTask.duration)
-    } : initialState;
-    setFormState(initialValues)
-  }, [editingTask])
-
   return (
     <Form onSubmit={handleSubmitValues} className="card p-4 mt-5">
       <Form.Group className="mb-3">
@@ -154,15 +133,8 @@ export const CreateTaskForm = () => {
       </Form.Group>
       <Form.Group className="d-flex">
         <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3">
-          {editingTask ? 'Edit Task' : 'Create Task'}
+          Create Task
         </Button>
-        {
-          editingTask && (
-            <Button onClick={() => dispatch(cleanEditingTask())} variant="secondary" type="button">
-              Cancel
-            </Button>
-          )
-        }
       </Form.Group>
     </Form>
   )

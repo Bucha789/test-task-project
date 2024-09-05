@@ -33,13 +33,11 @@ export type TaskModify = Pick<Task, 'id' | 'description' | 'duration'>
 export type TasksState = {
   addedTasks: Task[]
   currentTask?: CurrentTask | null
-  editingTask?: Task | null
 }
 
 const initialState: TasksState = {
   addedTasks: generateTasks(20) || [],
-  currentTask: null,
-  editingTask: null,
+  currentTask: null
 }
 
 export const tasksSlice = createSlice({
@@ -80,12 +78,6 @@ export const tasksSlice = createSlice({
         task.completedAt = new Date().toISOString()
       }
     },
-    registerEditingTask: (state, action: PayloadAction<TaskId>) => {
-      state.editingTask = state.addedTasks.find((task) => task.id === action.payload.id) || null;
-    },
-    cleanEditingTask: (state) => {
-      state.editingTask = null;
-    },
     registerCurrentTask: (state, action: PayloadAction<TaskId>) => {
       const taskToStart = state.addedTasks.find((task) => task.id === action.payload.id) || null;
       state.currentTask = taskToStart ? {
@@ -105,7 +97,7 @@ export const tasksSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { create, markAsCompleted, modify, remove, registerEditingTask, cleanEditingTask, cleanCurrentTask, registerCurrentTask, updateCurrentTask } = tasksSlice.actions
+export const { create, markAsCompleted, modify, remove, cleanCurrentTask, registerCurrentTask, updateCurrentTask } = tasksSlice.actions
 
 export const markAndCleanTask = (id: TaskId) => (dispatch: Dispatch) => {
   dispatch(markAsCompleted(id));
