@@ -1,9 +1,11 @@
 import { ChangeEvent, FormEventHandler, useCallback, useEffect, useState } from "react"
 import { cleanEditingTask, create, modify } from "../../store/slices/tasksSlice"
-import { Button, ButtonGroup, Col, Form, Row, Stack } from "react-bootstrap"
+import { Button, Col, Form, Row } from "react-bootstrap"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { getTimeFromSeconds } from "../../utils/time"
-import { HOURS_IN_SECONDS, LONG_TIME, MAX_TIME_INPUT_VALUE, MAX_TIME_ALLOWED, MEDIUM_TIME, MINUTES_IN_SECONDS, SHORT_TIME } from "../../constants"
+import { HOURS_IN_SECONDS,  MAX_TIME_ALLOWED, MINUTES_IN_SECONDS } from "../../constants"
+import { DefaultButtons } from "./DefaultButtons"
+import { TimeInputs } from "./TimeInputs"
 
 export type FormState = {
   description: string
@@ -23,7 +25,7 @@ const initialState: FormState = {
   }
 }
 
-export const TaskForm = () => {
+export const CreateTaskForm = () => {
   const { editingTask } = useAppSelector(state => state.tasks);
   const initialValues = editingTask ? {
     description: editingTask.description,
@@ -131,10 +133,10 @@ export const TaskForm = () => {
   }, [editingTask])
 
   return (
-    <Form onSubmit={handleSubmitValues} className="card p-4 mt-3">
+    <Form onSubmit={handleSubmitValues} className="card p-4 mt-5">
       <Form.Group className="mb-3">
         <Form.Label>Description</Form.Label>
-        <Form.Control onChange={handleChangeValues} type="text" name='description' placeholder="Enter Description" value={formState.description} />
+        <Form.Control onChange={handleChangeValues} type="text" name='description' placeholder="What are you working now?" value={formState.description} />
       </Form.Group>
       {
         error && <Form.Text className="text-danger">{error}</Form.Text>
@@ -143,27 +145,10 @@ export const TaskForm = () => {
         <Form.Label>Duration</Form.Label>
         <Row>
           <Col xl={3} md={5} sm={12} className="mb-3">
-            <ButtonGroup className="bg-transparent">
-              <Button onClick={handleClickDefaultButtons(SHORT_TIME)} className="bg-short">
-                30min
-              </Button>
-              <Button onClick={handleClickDefaultButtons(MEDIUM_TIME)} className="bg-medium">
-                45min
-              </Button>
-              <Button onClick={handleClickDefaultButtons(LONG_TIME)} className="bg-long">
-                1hr
-              </Button>
-            </ButtonGroup>
+            <DefaultButtons onClick={handleClickDefaultButtons} />
           </Col>
           <Col xl={4} md={8} sm={12}>
-            <Stack direction="horizontal" gap={2}>
-                <Form.Control onChange={handleTaskDuration('hours')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='hours' value={time.hours} />
-                <Form.Label>hrs</Form.Label>
-                <Form.Control onChange={handleTaskDuration('minutes')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='minutes' value={time.minutes} />
-                <Form.Label>min</Form.Label>
-                <Form.Control onChange={handleTaskDuration('seconds')} max={MAX_TIME_INPUT_VALUE} min={0} type="number" name='seconds' value={time.seconds} />
-                <Form.Label>seg</Form.Label>
-            </Stack>
+            <TimeInputs onChangeTaskDuration={handleTaskDuration} time={time} />
           </Col>
         </Row>
       </Form.Group>

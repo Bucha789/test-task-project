@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom';
 
-export const SideMenu = () => {
+export const TabMenu = () => {
   const getActiveClass = (isActive: boolean) => {
     return isActive ? 'nav-link active' : 'nav-link';
   }
   return (
-    <nav className='bg-body-secondary'>
-      <ul className='navbar-nav'>
+    <nav className='bg-body-secondary fixed-top'>
+      <ul className='nav nav-tabs'>
         <li className='nav-item'>
           <NavLink to='/tasks' className={({ isActive }) => getActiveClass(isActive)}>Tasks</NavLink>
         </li>

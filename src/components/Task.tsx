@@ -3,6 +3,8 @@ import { useAppDispatch } from '../store/hooks'
 import { markAsCompleted, registerCurrentTask, registerEditingTask, remove, updateCurrentTask } from '../store/slices/tasksSlice'
 import { useTimer } from '../hooks/useTimer'
 import { transformTimeToString } from '../utils/format'
+import { EditModal } from './modals/EditModal'
+import { useState } from 'react'
 
 
 type Props = {
@@ -14,6 +16,7 @@ type Props = {
 
 export const Task = ({ description, duration, id, taskType }: Props) => {
   const dispatch = useAppDispatch();
+  const [show, setShow] = useState(false);
   const { start, stop } = useTimer(duration, {
     onChangeTimer: (currentSeconds) => {
       dispatch(updateCurrentTask(currentSeconds))
@@ -30,6 +33,7 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
     dispatch(remove({ id }))
   }
   const handleEditTask = () => {
+    setShow(true);
     dispatch(registerEditingTask({ id }))
   }
 
@@ -53,6 +57,11 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
         <Button onClick={handleDelete} variant='danger'>Delete</Button>
         <Button onClick={handleEditTask} variant='warning'>Edit</Button>
       </Card.Body>
+      <EditModal
+        taskId={id} 
+        show={show}
+        handleClose={() => {setShow(false)}}
+      />
     </Card>
   )
 }

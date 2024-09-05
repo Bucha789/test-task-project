@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom"
 import { Timer } from "./components/Timer"
-import { SideMenu } from "./components/SideMenu"
+import { TabMenu } from "./components/TabMenu"
 
 export const App = () => {
   return (
     <div className="bg-body-tertiary container-fluid main__container">
-      <SideMenu />
+      <TabMenu />
       <Outlet />
       <div className="fixed-bottom bg-info-subtle">
         <Timer />
