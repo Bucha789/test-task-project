@@ -1,10 +1,27 @@
 import { ProgressBar } from "react-bootstrap";
-import { useAppSelector } from "../store/hooks"
+import { useAppDispatch, useAppSelector } from "../store/hooks"
 import { transformTimeToDisplay } from "../utils/format";
 import { calculateTimeProgress } from "../utils/time";
+import { useEffect } from "react";
+import { reproduceAudio } from "../utils";
+import audio from '../../public/clock-alarm-8761.mp3';
+import { cleanTaskInTimer } from "../store/slices/timerSlice";
 
 export const Timer = () => {
-  const currentTask = useAppSelector(state => state.tasks.currentTask);
+  const currentTask = useAppSelector(state => state.timer.task);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (currentTask) {
+      document.title = `${currentTask.description} - ${transformTimeToDisplay(currentTask.currentDuration
+      )}`
+    }
+    if (currentTask?.currentDuration === 0) {
+      document.title = 'Time is up!'
+      reproduceAudio(audio);
+      dispatch(cleanTaskInTimer())
+    }
+  }, [currentTask, dispatch])
+
   return currentTask ? (
     <div className="text-center">
       <h2>{currentTask.description}</h2>

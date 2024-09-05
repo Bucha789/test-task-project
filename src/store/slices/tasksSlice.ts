@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { Dispatch, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 import { getTaskType } from '../../utils/tasks';
 import { Task } from '../../components/Task';
@@ -32,12 +32,10 @@ export type TaskModify = Pick<Task, 'id' | 'description' | 'duration'>
 
 export type TasksState = {
   addedTasks: Task[]
-  currentTask?: CurrentTask | null
 }
 
 const initialState: TasksState = {
   addedTasks: generateTasks(20) || [],
-  currentTask: null
 }
 
 export const tasksSlice = createSlice({
@@ -78,31 +76,11 @@ export const tasksSlice = createSlice({
         task.completedAt = new Date().toISOString()
       }
     },
-    registerCurrentTask: (state, action: PayloadAction<TaskId>) => {
-      const taskToStart = state.addedTasks.find((task) => task.id === action.payload.id) || null;
-      state.currentTask = taskToStart ? {
-        ...taskToStart,
-        currentDuration: taskToStart.duration
-      } : null;
-    },
-    cleanCurrentTask: (state) => {
-      state.currentTask = null;
-    },
-    updateCurrentTask: (state, action: PayloadAction<number>) => {
-      if (state.currentTask) {
-        state.currentTask.currentDuration = action.payload;
-      }
-    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { create, markAsCompleted, modify, remove, cleanCurrentTask, registerCurrentTask, updateCurrentTask } = tasksSlice.actions
-
-export const markAndCleanTask = (id: TaskId) => (dispatch: Dispatch) => {
-  dispatch(markAsCompleted(id));
-  dispatch(cleanCurrentTask());
-}
+export const { create, markAsCompleted, modify, remove } = tasksSlice.actions
 
 
 export default tasksSlice.reducer

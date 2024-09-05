@@ -1,7 +1,7 @@
 import { Button, Card } from 'react-bootstrap'
 import { useAppDispatch } from '../store/hooks'
-import { markAsCompleted, registerCurrentTask, remove, updateCurrentTask } from '../store/slices/tasksSlice'
-import { useTimer } from '../hooks/useTimer'
+import { markAsCompleted, remove } from '../store/slices/tasksSlice'
+import { stopGlobalTimer } from '../store/slices/timerSlice'
 import { transformTimeToString } from '../utils/format'
 import { EditModal } from './modals/EditModal'
 import { useState } from 'react'
@@ -12,21 +12,15 @@ type Props = {
   duration: number
   id: string
   taskType: string
+  initializeTimer: () => void
 }
 
-export const Task = ({ description, duration, id, taskType }: Props) => {
+export const Task = ({ description, duration, id, taskType, initializeTimer }: Props) => {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
-  const { start, stop } = useTimer(duration, {
-    onChangeTimer: (currentSeconds) => {
-      dispatch(updateCurrentTask(currentSeconds))
-      document.title = `Running - ${transformTimeToString(currentSeconds)}`
-    },
-    playSound: true
-  });
   const handleComplete = () => {
     dispatch(markAsCompleted({ id }))
-    stop();
+    dispatch(stopGlobalTimer());
     document.title = 'Task completed'
   }
   const handleDelete = () => {
@@ -35,10 +29,8 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
   const handleEditTask = () => {
     setShow(true);
   }
-
-  const handleStartTask = () => {
-    dispatch(registerCurrentTask({ id }))
-    start();
+  const handleStopTask = () => {
+    dispatch(stopGlobalTimer());
   }
 
   return (
@@ -46,10 +38,10 @@ export const Task = ({ description, duration, id, taskType }: Props) => {
       <Card.Body>
         <Card.Text className='text-white'>{description}</Card.Text>
         <Card.Text className='text-white'>{transformTimeToString(duration)}</Card.Text>
-        <Button onClick={handleStartTask}>
+        <Button onClick={initializeTimer}>
           Start
         </Button>
-        <Button onClick={stop}>
+        <Button onClick={handleStopTask}>
           Stop
         </Button>
         <Button onClick={handleComplete} variant='primary'>Complete</Button>
