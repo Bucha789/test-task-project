@@ -1,7 +1,21 @@
 .main__container {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 1fr 80px;
+  padding: 2rem 0;
+}
+
+.bg-short {
+  background-color: #0dab76;
+}
+
+.bg-medium {
+  background-color: #139a43;
+}
+
+.bg-long {
+  background-color: #0b5d1e;
+}
+
+.bg-custom {
+  background-color: #053b06;
 }

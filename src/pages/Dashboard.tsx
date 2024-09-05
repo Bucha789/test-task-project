@@ -1,17 +1,16 @@
-import { TaskForm } from "../components/form/TaskForm"
-import { Tasks } from "../components/Tasks"
+import { Container } from "react-bootstrap"
+import { CreateTaskForm } from "../components/form/CreateTaskForm"
+import { TaskListContainer } from "../components/TasksContainer"
 
 export const Dashboard = () => {
   return (
-    <div>
-      <h1>Create a task</h1>
+    <Container>
       <div className="mb-5">
-        <TaskForm />
+        <CreateTaskForm />
       </div>
-      <h2>Recent tasks</h2>
       <div className="mb-5">
-        <Tasks />
+        <TaskListContainer />
       </div>
-    </div>
+    </Container>
   )
 }
