@@ -2,8 +2,11 @@ import { ButtonGroup, Col, Container, Form, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../store/hooks"
 import { Task as TaskComponent } from "./Task"
 import { ReactEventHandler, useState } from "react";
-import { Task, TaskType } from "../store/slices/tasksSlice";
+import { create, Task, TaskType } from "../store/slices/tasksSlice";
 import { addTaskToTimer, startGlobalTimer } from "../store/slices/timerSlice";
+import { BsList } from "react-icons/bs";
+import { BsFillGridFill } from "react-icons/bs";
+
 
 
 
@@ -24,6 +27,7 @@ export const Tasks = () => {
 
   const handleInitializeTimer = (task: Task) => () => {
     if (!currentTask) {
+      dispatch(create(task))
       dispatch(addTaskToTimer(task))
       dispatch(startGlobalTimer())
     }
@@ -34,8 +38,8 @@ export const Tasks = () => {
       <Row className="mb-5">
         <Col>
           <ButtonGroup>
-            <button onClick={() => setView('card')} className={`btn ${view === 'card' ? 'btn-primary' : 'btn-light'}`}>Card</button>
-            <button onClick={() => setView('list')} className={`btn ${view === 'list' ? 'btn-primary' : 'btn-light'}`}>List</button>
+            <button onClick={() => setView('card')} className={`btn ${view === 'card' ? 'btn-primary' : 'btn-light'}`}><BsFillGridFill /></button>
+            <button onClick={() => setView('list')} className={`btn ${view === 'list' ? 'btn-primary' : 'btn-light'}`}><BsList /></button>
           </ButtonGroup>
         </Col>
         <Col>
@@ -59,9 +63,10 @@ export const Tasks = () => {
                 duration={item.duration}
                 taskType={item.type}
                 initializeTimer={handleInitializeTimer(item)}
-              />
+                viewType={view}
+                />
             </Col>) : (
-            <Col key={item.id} xs={12} className="mb-3">
+              <Col key={item.id} xs={12} className="mb-3">
               <TaskComponent
                 key={item.id}
                 id={item.id}
@@ -69,6 +74,7 @@ export const Tasks = () => {
                 duration={item.duration}
                 taskType={item.type}
                 initializeTimer={handleInitializeTimer(item)}
+                viewType={view}
               />
             </Col>
           )

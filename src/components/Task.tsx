@@ -1,10 +1,12 @@
-import { Button, Card } from 'react-bootstrap'
+import { useState } from 'react'
+import { Button, Card, Stack } from 'react-bootstrap'
+import { BsPlayFill } from "react-icons/bs";
 import { useAppDispatch } from '../store/hooks'
-import { markAsCompleted, remove } from '../store/slices/tasksSlice'
-import { stopGlobalTimer } from '../store/slices/timerSlice'
+import { remove } from '../store/slices/tasksSlice'
 import { transformTimeToString } from '../utils/format'
 import { EditModal } from './modals/EditModal'
-import { useState } from 'react'
+import { BsFillTrash3Fill } from "react-icons/bs";
+import { BsPencilSquare } from "react-icons/bs";
 
 
 type Props = {
@@ -13,45 +15,44 @@ type Props = {
   id: string
   taskType: string
   initializeTimer: () => void
+  viewType?: 'list' | 'card'
 }
 
-export const Task = ({ description, duration, id, taskType, initializeTimer }: Props) => {
+export const Task = ({ description, duration, id, taskType, initializeTimer, viewType }: Props) => {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
-  const handleComplete = () => {
-    dispatch(markAsCompleted({ id }))
-    dispatch(stopGlobalTimer());
-    document.title = 'Task completed'
-  }
+  const directionSelected = viewType === 'card' ? 'vertical' : 'horizontal';
   const handleDelete = () => {
     dispatch(remove({ id }))
   }
   const handleEditTask = () => {
     setShow(true);
   }
-  const handleStopTask = () => {
-    dispatch(stopGlobalTimer());
-  }
-
   return (
     <Card className={`bg-${taskType}`}>
       <Card.Body>
-        <Card.Text className='text-white'>{description}</Card.Text>
-        <Card.Text className='text-white'>{transformTimeToString(duration)}</Card.Text>
-        <Button onClick={initializeTimer}>
-          Start
-        </Button>
-        <Button onClick={handleStopTask}>
-          Stop
-        </Button>
-        <Button onClick={handleComplete} variant='primary'>Complete</Button>
-        <Button onClick={handleDelete} variant='danger'>Delete</Button>
-        <Button onClick={handleEditTask} variant='warning'>Edit</Button>
+        <Stack direction={directionSelected} className='justify-content-between'>
+          <Card.Text className='text-white'>{description}</Card.Text>
+          <Stack gap={4} direction='horizontal'>
+            <Card.Subtitle className='text-white text-opacity-75'>{transformTimeToString(duration)}</Card.Subtitle>
+            <Stack gap={2} direction='horizontal'>
+              <Button onClick={initializeTimer}>
+                <BsPlayFill />
+              </Button>
+              <Button onClick={handleDelete} variant='danger'>
+                <BsFillTrash3Fill />
+              </Button>
+              <Button onClick={handleEditTask} variant='warning'>
+                <BsPencilSquare />
+              </Button>
+            </Stack>
+          </Stack>
+        </Stack>
       </Card.Body>
       <EditModal
-        taskId={id} 
+        taskId={id}
         show={show}
-        handleClose={() => {setShow(false)}}
+        handleClose={() => { setShow(false) }}
       />
     </Card>
   )

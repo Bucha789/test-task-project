@@ -129,12 +129,14 @@ export const CreateTaskForm = () => {
           <Col xl={4} md={8} sm={12}>
             <TimeInputs onChangeTaskDuration={handleTaskDuration} time={time} />
           </Col>
+          <Col xl={5} md={12} sm={12} className="d-flex justify-content-end">
+            <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3">
+              Create Task
+            </Button>
+          </Col>
         </Row>
       </Form.Group>
       <Form.Group className="d-flex">
-        <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3">
-          Create Task
-        </Button>
       </Form.Group>
     </Form>
   )
