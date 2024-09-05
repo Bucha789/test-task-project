@@ -3,14 +3,14 @@ import { useAppDispatch, useAppSelector } from "../store/hooks"
 import { transformTimeToDisplay } from "../utils/format";
 import { calculateTimeProgress } from "../utils/time";
 import { useEffect } from "react";
-import { BsCheck, BsStopFill } from "react-icons/bs";
+import { BsArrowRepeat, BsCheck, BsStopFill } from "react-icons/bs";
 import { reproduceAudio } from "../utils";
 import audio from '../../public/clock-alarm-8761.mp3';
-import { cleanTaskInTimer, stopGlobalTimer } from "../store/slices/timerSlice";
+import { cleanTaskInTimer, reset, startGlobalTimer, stopGlobalTimer } from "../store/slices/timerSlice";
 import { markAsCompleted } from "../store/slices/tasksSlice";
 
 export const Timer = () => {
-  const currentTask = useAppSelector(state => state.timer.task);
+  const { isRunning, task: currentTask } = useAppSelector(state => state.timer);
   const dispatch = useAppDispatch();
   const handleStopTask = () => {
     dispatch(stopGlobalTimer());
@@ -23,6 +23,18 @@ export const Timer = () => {
       document.title = 'Task completed'
     }
   }
+
+  const handleRestartTimer = () => {
+    if (currentTask && isRunning) {
+      dispatch(stopGlobalTimer());
+      dispatch(reset());
+      // Start the timer again after 1 second to avoid conflicts with the previous timer instance
+      setTimeout(() => {
+        dispatch(startGlobalTimer());
+      }, 1000);
+    }
+  }
+
   useEffect(() => {
     if (currentTask) {
       document.title = `Focus 🚀 - ${transformTimeToDisplay(currentTask.currentDuration
@@ -44,11 +56,14 @@ export const Timer = () => {
         <Col xs={3}>
           <Stack direction="horizontal" gap={3}>
             <div>{transformTimeToDisplay(currentTask.currentDuration)}</div>
-            <Button onClick={handleStopTask}>
+            <Button onClick={handleCompleteTask} variant='success'>
+              <BsCheck />
+            </Button>
+            <Button onClick={handleStopTask} variant='danger'>
               <BsStopFill />
             </Button>
-            <Button onClick={handleCompleteTask} variant='primary'>
-              <BsCheck />
+            <Button onClick={handleRestartTimer} variant="secondary">
+              <BsArrowRepeat />
             </Button>
           </Stack>
         </Col>

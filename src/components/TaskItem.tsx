@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Button, Card, Stack } from 'react-bootstrap'
-import { BsPlayFill } from "react-icons/bs";
-import { useAppDispatch } from '../store/hooks'
-import { remove } from '../store/slices/tasksSlice'
+import { BsCheck, BsPlayFill } from "react-icons/bs";
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { markAsCompleted, remove } from '../store/slices/tasksSlice'
 import { transformTimeToString } from '../utils/format'
 import { EditModal } from './modals/EditModal'
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { BsPencilSquare } from "react-icons/bs";
+import { cleanTaskInTimer, stopGlobalTimer } from '../store/slices/timerSlice';
+import { AlertModal } from './modals/AlertModal';
 
 
 type Props = {
@@ -20,14 +22,33 @@ type Props = {
 }
 
 export const TaskItem = ({ description, duration, id, taskType, initializeTimer, viewType, completed }: Props) => {
+  const currentTask = useAppSelector(state => state.timer.task);
   const dispatch = useAppDispatch();
-  const [show, setShow] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const directionSelected = viewType === 'card' ? 'vertical' : 'horizontal';
+
+
+  const handleStartTimer = () => {
+    if (currentTask && currentTask.id !== id) {
+      return setShowAlertModal(true);
+    }
+    initializeTimer();
+  }
+
   const handleDelete = () => {
     dispatch(remove({ id }))
   }
   const handleEditTask = () => {
-    setShow(true);
+    setShowEditModal(true);
+  }
+  const handleCompleteTask = () => {
+    if (currentTask) {
+      dispatch(markAsCompleted({ id: currentTask?.id }));
+      dispatch(stopGlobalTimer());
+      dispatch(cleanTaskInTimer());
+      document.title = 'Task completed'
+    }
   }
   return (
     <Card className={`bg-${taskType}`}>
@@ -38,9 +59,16 @@ export const TaskItem = ({ description, duration, id, taskType, initializeTimer,
             <Card.Subtitle className='text-white text-opacity-75'>{transformTimeToString(duration)}</Card.Subtitle>
             <Stack gap={2} direction='horizontal'>
               {
-                !completed && (
-                  <Button onClick={initializeTimer}>
+                !completed && currentTask?.id !== id && (
+                  <Button onClick={handleStartTimer}>
                     <BsPlayFill />
+                  </Button>
+                )
+              }
+              {
+                currentTask && currentTask.id === id && (
+                  <Button onClick={handleCompleteTask} variant='primary'>
+                    <BsCheck />
                   </Button>
                 )
               }
@@ -56,8 +84,12 @@ export const TaskItem = ({ description, duration, id, taskType, initializeTimer,
       </Card.Body>
       <EditModal
         taskId={id}
-        show={show}
-        handleClose={() => { setShow(false) }}
+        show={showEditModal}
+        handleClose={() => { setShowEditModal(false) }}
+      />
+      <AlertModal
+        show={showAlertModal}
+        handleClose={() => { setShowAlertModal(false) }}
       />
     </Card>
   )
