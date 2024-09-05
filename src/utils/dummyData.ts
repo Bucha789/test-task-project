@@ -12,8 +12,8 @@ export const generateTasks = (n: number) => {
       description: faker.lorem.sentence(),
       duration,
       type,
-      createdAt: faker.date.recent().toISOString(),
-      completed: faker.datatype.boolean(),
+      createdAt: faker.date.recent({days: 7}).toISOString(),
+      completed: true,
     }
     tasks.push(task);
   }

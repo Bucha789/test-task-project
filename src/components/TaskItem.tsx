@@ -16,9 +16,10 @@ type Props = {
   taskType: string
   initializeTimer: () => void
   viewType?: 'list' | 'card'
+  completed?: boolean
 }
 
-export const TaskItem = ({ description, duration, id, taskType, initializeTimer, viewType }: Props) => {
+export const TaskItem = ({ description, duration, id, taskType, initializeTimer, viewType, completed }: Props) => {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const directionSelected = viewType === 'card' ? 'vertical' : 'horizontal';
@@ -36,9 +37,13 @@ export const TaskItem = ({ description, duration, id, taskType, initializeTimer,
           <Stack gap={4} direction='horizontal'>
             <Card.Subtitle className='text-white text-opacity-75'>{transformTimeToString(duration)}</Card.Subtitle>
             <Stack gap={2} direction='horizontal'>
-              <Button onClick={initializeTimer}>
-                <BsPlayFill />
-              </Button>
+              {
+                !completed && (
+                  <Button onClick={initializeTimer}>
+                    <BsPlayFill />
+                  </Button>
+                )
+              }
               <Button onClick={handleDelete} variant='danger'>
                 <BsFillTrash3Fill />
               </Button>

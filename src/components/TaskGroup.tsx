@@ -1,5 +1,5 @@
 import { Col } from "react-bootstrap"
-import { create, Task } from "../store/slices/tasksSlice"
+import { Task } from "../store/slices/tasksSlice"
 import { TaskItem } from "./TaskItem"
 import { useAppDispatch, useAppSelector } from "../store/hooks"
 import { addTaskToTimer, startGlobalTimer } from "../store/slices/timerSlice"
@@ -13,7 +13,6 @@ export const TaskGroup = ({ tasks, view }: Props) => {
   const currentTask = useAppSelector(state => state.timer.task);
   const handleInitializeTimer = (task: Task) => () => {
     if (!currentTask) {
-      dispatch(create(task))
       dispatch(addTaskToTimer(task))
       dispatch(startGlobalTimer())
     }
@@ -26,6 +25,7 @@ export const TaskGroup = ({ tasks, view }: Props) => {
     taskType={task.type}
     initializeTimer={handleInitializeTimer(task)}
     viewType={view}
+    completed={task.completed}
   />)
 
   return (

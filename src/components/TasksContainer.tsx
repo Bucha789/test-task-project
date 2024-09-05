@@ -6,6 +6,7 @@ import { BsList } from "react-icons/bs";
 import { BsFillGridFill } from "react-icons/bs";
 import dayjs from "dayjs";
 import { TaskGroup } from "./TaskGroup";
+import { displayTimeAgo } from "../utils/time";
 
 
 
@@ -14,7 +15,8 @@ export const TaskListContainer = () => {
   const addedTasks = useAppSelector(state => state.tasks.addedTasks);
   const [filterByDuration, setFilterByDuration] = useState<TaskType | null>(null);
   const [view, setView] = useState<'card' | 'list'>('card');
-  const filteredTasks = filterByDuration ? addedTasks.filter(item => item.type === filterByDuration) : addedTasks;
+  const sortedTasks = addedTasks.slice().sort((a, b) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix());
+  const filteredTasks = filterByDuration ? sortedTasks.filter(item => item.type === filterByDuration) : sortedTasks;
   const groupedTasks: Record<string, Task[]> = filteredTasks.reduce((acc, item) => {
     const date: string = dayjs(item.createdAt).format('YYYY-MM-DD') || 'unknown'
 
@@ -53,7 +55,7 @@ export const TaskListContainer = () => {
       </Row>
         {
           Object.keys(groupedTasks).map(date => (<Row className="mb-3" key={date}>
-            <div className="mb-2">{dayjs(date).fromNow()}</div>
+            <div className="mb-2">{displayTimeAgo(date)}</div>
             <Row className="container-fluid">
               <TaskGroup tasks={groupedTasks[date]} view={view} />
             </Row>

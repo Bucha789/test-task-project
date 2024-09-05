@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { HOURS_IN_SECONDS, MINUTES_IN_SECONDS } from "../constants";
 
 export const getTimeFromSeconds = (timeInSeconds: number) => {
@@ -13,4 +14,19 @@ export const getTimeFromSeconds = (timeInSeconds: number) => {
 
 export const calculateTimeProgress = (seconds: number, totalSeconds: number) => {
   return Math.floor(seconds / totalSeconds * 100);
+}
+
+export const displayTimeAgo = (date: string) => {
+  const now = dayjs();
+  const dateToCompare = dayjs(date);
+
+  const diffInDays = now.diff(dateToCompare, 'day');
+
+  if (diffInDays === 0) {
+    return "today";
+  } else if (diffInDays === 1) {
+    return "yesterday";
+  } else {
+    return dateToCompare.fromNow();
+  }
 }
