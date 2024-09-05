@@ -30,3 +30,18 @@ export const displayTimeAgo = (date: string) => {
     return dateToCompare.fromNow();
   }
 }
+
+export const getLastSevenDays = () => {
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  
+  const today = new Date();
+  const currentDayIndex = today.getDay();
+  
+  const last7Days = [];
+  for (let i = 0; i < 7; i++) {
+    const dayIndex = (currentDayIndex - i + 7) % 7;
+    last7Days.push(daysOfWeek[dayIndex]);
+  }
+
+  return last7Days;
+}

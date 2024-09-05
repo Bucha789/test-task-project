@@ -13,6 +13,8 @@ export type Task = {
   duration: number
   createdAt: string
   completedAt?: string
+  //the real time in seconds that the task took to be completed
+  completedTime?: number
   completed: boolean
   type: TaskType
 }
@@ -33,7 +35,7 @@ export type TasksState = {
 }
 
 const initialState: TasksState = {
-  addedTasks: generateTasks(50) || [],
+  addedTasks: generateTasks(20) || [],
 }
 
 export const tasksSlice = createSlice({
@@ -66,12 +68,15 @@ export const tasksSlice = createSlice({
       //delete an existing task
       state.addedTasks = state.addedTasks.filter(item => item.id !== action.payload.id)
     },
-    markAsCompleted: (state, action: PayloadAction<TaskId>) => {
+    markAsCompleted: (state, action: PayloadAction<TaskId & {
+      duration: number
+    }>) => {
       //mark as completed a task
       const task = state.addedTasks.find((task) => task.id === action.payload.id);
       if (task) {
         task.completed = true
         task.completedAt = new Date().toISOString()
+        task.completedTime = task.duration - action.payload.duration
       }
     },
   },

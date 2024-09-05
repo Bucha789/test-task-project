@@ -21,7 +21,7 @@ export const Timer = () => {
   }
   const handleCompleteTask = () => {
     if (currentTask) {
-      dispatch(markAsCompleted({ id: currentTask?.id }));
+      dispatch(markAsCompleted({ id: currentTask?.id, duration: currentTask.currentDuration }));
       dispatch(stopGlobalTimer());
       dispatch(cleanTaskInTimer());
       document.title = 'Task completed'
@@ -63,7 +63,7 @@ export const Timer = () => {
       document.title = 'Time is up!'
       reproduceAudio(audio);
       dispatch(cleanTaskInTimer())
-      dispatch(markAsCompleted({ id: currentTask.id }))
+      dispatch(markAsCompleted({ id: currentTask.id, duration: currentTask.duration }))
     }
   }, [currentTask, dispatch])
 
