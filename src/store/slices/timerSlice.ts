@@ -1,20 +1,22 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../index";
 import { CurrentTask, Task } from "./tasksSlice";
+import { transformToObj } from "../../utils";
 
 export type TaskTimerState = {
   isRunning: boolean;
   task: CurrentTask | null;
 };
 
-const initialState: TaskTimerState = {
-  isRunning: false,
-  task: null,
-};
+
+const savedTask = localStorage.getItem('task');
 
 const timerSlice = createSlice({
   name: 'timer',
-  initialState,
+  initialState: {
+    isRunning: false,
+    task: transformToObj<CurrentTask, null>(savedTask, null),
+  },
   reducers: {
     start: (state) => { state.isRunning = true; },
     stop: (state) => { state.isRunning = false; },
@@ -35,7 +37,11 @@ const timerSlice = createSlice({
     },
     cleanTaskInTimer: (state) => {
       state.task = null;
+      state.isRunning = false;
     },
+    loadInitialState: (state, action: PayloadAction<TaskTimerState>) => {
+      state.isRunning = action.payload.isRunning;
+    }
   },
 });
 
