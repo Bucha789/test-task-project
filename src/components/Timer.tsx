@@ -12,7 +12,7 @@ import { markAsCompleted } from "../store/slices/tasksSlice";
 export const Timer = () => {
   const { isRunning, task: currentTask } = useAppSelector(state => state.timer);
   const dispatch = useAppDispatch();
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState<boolean>(!!currentTask && !isRunning);
   const [isStopped, setIsStopped] = useState(false);
 
   const handleStopTask = () => {
@@ -50,9 +50,9 @@ export const Timer = () => {
   }
 
   const handleCleanTask = () => {
+    setIsStopped(false);
     dispatch(cleanTaskInTimer());
   }
-
 
   useEffect(() => {
     if (currentTask) {

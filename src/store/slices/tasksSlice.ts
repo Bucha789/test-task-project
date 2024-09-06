@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 import { getTaskType } from '../../utils/tasks';
+import { transformToObj } from '../../utils';
 
 export type TaskType = 'short' | 'medium' | 'long' | 'custom'
 
@@ -33,13 +34,15 @@ export type TasksState = {
   addedTasks: Task[]
 }
 
-const initialState: TasksState = {
-  addedTasks: [],
-}
+
+const savedTasks = localStorage.getItem('addedTasks');
+
 
 export const tasksSlice = createSlice({
   name: 'tasks',
-  initialState,
+  initialState: {
+    addedTasks: transformToObj<Task[], Task[]>(savedTasks, []),
+  },
   reducers: {
     create: (state, action: PayloadAction<TaskInput>) => {
       // create a new task
