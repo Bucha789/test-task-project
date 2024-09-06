@@ -3,11 +3,17 @@ This project pretends to create a countdown timer that can be used in different 
 
 Project Website: [Countdown Timer](https://main--arkon-data-test.netlify.app/)
 
+## Features
+- **Tasks**: The user can create tasks and set the time for each one.
+- **Timer**: The user can set the time and the timer will start counting down.
+- **Sound**: When the time is up, the timer will play a sound to alert the user.
+- **Analytics**: The user can see the tasks completed in the last 7 days.
+- **Responsive**: The application is responsive and can be used on different devices.
+
 ## Technologies
-- HTML
-- CSS
-- TypeScript
-- Vite
+- **HTML, CSS**: For the structure and styling of the application.
+- **TypeScript**: Used for safer and strongly typed development.
+- **Vite**: Tool used for fast project creation and development.
 
 ## Main libraries used in the project
 ### [Redux Toolkit](https://redux-toolkit.js.org/)
@@ -19,7 +25,7 @@ Project Website: [Countdown Timer](https://main--arkon-data-test.netlify.app/)
   To add icons to the project, the React-icons library was used.
 ### [Victory](https://formidable.com/open-source/victory/)
   It's used to create the chart that shows the tasks completed by the user in the analytics page.
-### [react-router-dom](https://reactrouter.com/web/guides/quick-start)
+### [react-router-dom](https://reactrouter.com/en/main)
   To create the task page and the analytics page, the react-router-dom library was used.
 ### [dayjs](https://day.js.org/)
   Some functions use the dayjs library to manipulate dates.
@@ -59,3 +65,6 @@ If you want to add more tasks, you can modify the `src/script.js` file and run t
     const array = generateTasks(50); // Change the number to the amount of tasks you want to generate
   ```
 
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
