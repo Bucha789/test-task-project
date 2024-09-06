@@ -7,29 +7,35 @@ import { BsFillGridFill } from "react-icons/bs";
 import dayjs from "dayjs";
 import { TaskGroup } from "./TaskGroup";
 import { displayTimeAgo } from "../utils/time";
-import { filterTasksByDuration } from "../utils/tasks";
+import { filterTasksByDuration, groupTasksByDate } from "../utils/tasks";
 import { TaskItem } from "./TaskItem";
 
 
 
-
+// This component is responsible for displaying the list of tasks
+// It also allows the user to filter the tasks by duration and change the view between list and card
+// It uses the global state to get the tasks and the current task
+// It uses the TaskGroup component to render the tasks in a better way
 export const TaskListContainer = () => {
   const addedTasks = useAppSelector(state => state.tasks.addedTasks);
   const currentTask = useAppSelector(state => state.timer.task);
+  // Filter the tasks by duration to show the tasks in a better way
   const [filterByDuration, setFilterByDuration] = useState<'short' | 'medium' | 'long' | null>(null);
+  // Change the view between list and card
+  // I know that there's a prop that causes the prop drilling anti-pattern but I think it's not a big deal in this case
+  // According to certain requirements that need a better understanding of the project 
+  // We could change this and add a state for the views(example)
   const [view, setView] = useState<'card' | 'list'>('list');
+  // Sort the tasks by createdAt date to manipulate the data easily
+  // I think we could add a selector to sort the tasks in the store to avoid sorting the tasks in the component
+  // But I think it's not a big deal in this case becase is done just twice in the app
   const sortedTasks = addedTasks.slice().sort((a, b) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix());
+  // Filter the tasks by duration
   const filteredTasks = filterByDuration ? filterTasksByDuration(sortedTasks, filterByDuration) : sortedTasks;
 
-  const groupedTasks: Record<string, Task[]> = filteredTasks.reduce((acc, item) => {
-    const date: string = dayjs(item.createdAt).format('YYYY-MM-DD') || 'unknown'
-
-    if(!acc[date]) {
-      acc[date] = []
-    }
-    acc[date].push(item)
-    return acc;
-  }, {} as Record<string, Task[]>)
+  const groupedTasks: Record<string, Task[]> = groupTasksByDate(filteredTasks);
+  // This function is responsible for filtering the tasks by duration
+  // It's used in a select element to filter the tasks by duration
   const handleFilterByDuration: ReactEventHandler<HTMLSelectElement> = (event) => {
     const value = event.currentTarget.value as 'short' | 'medium' | 'long';
     if (value) {
@@ -37,7 +43,11 @@ export const TaskListContainer = () => {
     }
     return setFilterByDuration(null);
   }
-
+  // This is showed in this way:
+  // If there are no tasks added yet show a message with indications
+  // If there is a task that is currently running show the current task
+  // If there are tasks added show the tasks grouped by day
+  // I think we could add a loading state to show a spinner while the tasks are loading but currently this app is not fetching data from an API
   return (
     <Container>
       <Row>
