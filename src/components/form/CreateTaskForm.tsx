@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEventHandler, useCallback, useEffect, useState } from "react"
+import { ChangeEvent, FormEventHandler, useCallback, useState } from "react"
 import { create } from "../../store/slices/tasksSlice"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useAppDispatch } from "../../store/hooks"
@@ -40,18 +40,7 @@ export const CreateTaskForm = () => {
       [event.target.name]: event.target.value
     })
   }
-  //This function is used to handle the form state
-  const handleSubmitValues: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    // We need to convert the time to seconds to store it in the database
-    const duration = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
-    dispatch(create({
-      description: formState.description,
-      duration
-    }))
-    setFormState(initialState)
-  }
-
+  
   const handleClickDefaultButtons = (seconds: number) => () => {
     if (seconds === HOURS_IN_SECONDS) {
       return setFormState({
@@ -69,7 +58,7 @@ export const CreateTaskForm = () => {
       time
     })
   }
-
+  
   const handleTaskDuration = (type: keyof FormState['time']) => (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value || 0);
     setFormState({
@@ -80,29 +69,41 @@ export const CreateTaskForm = () => {
       }
     })
   }
-
+  
   const handleErrors = useCallback(() => {
     // The task is using the time in seconds, so we need to convert the time to seconds
     const currentSeconds = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
     //We need to check if the time is less than 2 hours
     if (currentSeconds > MAX_TIME_ALLOWED) {
-      return setError('Duration must be less than 2 hours')
+      return 'Duration must be less than 2 hours'
     }
     // Or if the time is less than 0
     if (currentSeconds < 0) {
-      return setError('Duration must be greater than 0')
+      return 'Duration must be greater than 0'
     }
     // We need to check if the description and the time are filled
     if (!currentSeconds || !formState.description) {
-      return setError('Description and duration are required')
+      return 'Description and duration are required'
     }
-
-    setError(null)
+    return null;
   }, [formState])
-  //TODO: Check if we can avoid this useEffect
-  useEffect(() => {
-    handleErrors()
-  }, [handleErrors])
+  
+  //This function is used to handle the form state
+  const handleSubmitValues: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    const error = handleErrors();
+    if (error) {
+      return setError(error)
+    }
+    // We need to convert the time to seconds to store it in the database
+    const duration = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
+    dispatch(create({
+      description: formState.description,
+      duration
+    }))
+    setFormState(initialState)
+    setError(null)
+  }
 
   return (
     <Form onSubmit={handleSubmitValues} className="card p-4 mt-5">
@@ -110,9 +111,6 @@ export const CreateTaskForm = () => {
         <Form.Label>Description</Form.Label>
         <Form.Control onChange={handleChangeValues} type="text" name='description' placeholder="What are you working now?" value={formState.description} />
       </Form.Group>
-      {
-        error && <Form.Text className="text-danger">{error}</Form.Text>
-      }
       <Form.Group className="mb-3">
         <Form.Label>Duration</Form.Label>
         <Row>
@@ -123,14 +121,15 @@ export const CreateTaskForm = () => {
             <TimeInputs onChangeTaskDuration={handleTaskDuration} time={time} />
           </Col>
           <Col xl={5} md={12} sm={12} className="d-flex justify-content-start align-items-center">
-            <Button disabled={Boolean(error)} variant="primary" type="submit" className="me-3 p-2">
+            <Button variant="primary" type="submit" className="me-3 p-2">
               Create Task
             </Button>
           </Col>
         </Row>
       </Form.Group>
-      <Form.Group className="d-flex">
-      </Form.Group>
+      {
+        error && <Form.Text className="text-danger">{error}</Form.Text>
+      }
     </Form>
   )
 }

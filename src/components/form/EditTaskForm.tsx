@@ -1,20 +1,20 @@
 import { Col, Container, Form, Row } from "react-bootstrap"
 import { TimeInputs } from "./TimeInputs";
 import { DefaultButtons } from "./DefaultButtons";
-import { ChangeEvent, SetStateAction, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import { getTimeFromSeconds } from "../../utils/time";
 import { FormState } from "./CreateTaskForm";
-import { HOURS_IN_SECONDS, MAX_TIME_ALLOWED, MINUTES_IN_SECONDS } from "../../constants";
+import { HOURS_IN_SECONDS } from "../../constants";
 
 
 type Props = {
   onChangeFormState: (value: SetStateAction<FormState>) => void
   values: FormState
+  error: string | null
 }
 // This component is used in the TaskForm component to manage the form to edit a task
 // It uses the DefaultButtons and TimeInputs components
-export const EditTaskForm = ({ onChangeFormState, values }: Props) => {
-  const [error, setError] = useState<string | null>(null);
+export const EditTaskForm = ({ onChangeFormState, values, error }: Props) => {
 
   // TODO: Check if we can re use this function to avoid code duplication
   //This function is used in the TimeInputs component to handle the time of the task
@@ -58,28 +58,6 @@ export const EditTaskForm = ({ onChangeFormState, values }: Props) => {
     })
   }
 
-  // This function is used to handle the errors in the form
-  const handleErrors = useCallback(() => {
-    // The task is using the time in seconds, so we need to convert the time to seconds
-    const currentSeconds = values.time.hours * HOURS_IN_SECONDS + values.time.minutes * MINUTES_IN_SECONDS + values.time.seconds;
-    if (currentSeconds > MAX_TIME_ALLOWED) {
-      return setError('Duration must be less than 2 hours')
-    }
-    if (currentSeconds < 0) {
-      return setError('Duration must be greater than 0')
-    }
-
-    if (!currentSeconds || !values.description) {
-      return setError('Description and duration are required')
-    }
-
-    setError(null)
-  }, [values])
-  //TODO: Check if we can avoid this useEffect
-  useEffect(() => {
-    handleErrors()
-  }, [handleErrors])
-
   // This component returns the form to edit a task
   // it's almost the same as the CreateTaskForm component
   return (
@@ -88,9 +66,6 @@ export const EditTaskForm = ({ onChangeFormState, values }: Props) => {
         <Form.Label>Description</Form.Label>
         <Form.Control onChange={handleChangeValues} type="text" name='description' placeholder="What are you working now?" value={values.description} />
       </Form.Group>
-      {
-        error && <Form.Text className="text-danger">{error}</Form.Text>
-      }
       <Form.Group className="mb-3">
         <Form.Label>Duration</Form.Label>
         <Row>
@@ -102,6 +77,9 @@ export const EditTaskForm = ({ onChangeFormState, values }: Props) => {
           </Col>
         </Row>
       </Form.Group>
+      {
+        error && <Form.Text className="text-danger">{error}</Form.Text>
+      }
     </Container>
   )
 }

@@ -37,6 +37,20 @@ export const Analytics = () => {
     }
   })
 
+  const realDurationPerDayInHours = realDurationPerDay.map(item => {
+    return {
+      day: item.day,
+      duration: item.duration / 3600
+    }
+  })
+
+  const completedTasksPerDay = Object.keys(tasksGroupedByDay).map(day => {
+    return {
+      day,
+      tasks: tasksGroupedByDay[day].filter(item => item.completed).length
+    }
+  })
+
   // If there are no tasks added yet show a message with indications
   if (Object.keys(tasksGroupedByDay).length === 0) {
     return (
@@ -75,12 +89,7 @@ export const Analytics = () => {
               width={400}
             />
             <VictoryBar
-              data={Object.keys(tasksGroupedByDay).map(day => {
-                return {
-                  day,
-                  tasks: tasksGroupedByDay[day].length
-                }
-              })}
+              data={completedTasksPerDay}
               style={{
                 data: { fill: "#0dab76" }
               }}
@@ -140,12 +149,7 @@ export const Analytics = () => {
               width={400}
             />
             <VictoryBar
-              data={realDurationPerDay.map(item => {
-                return {
-                  day: item.day,
-                  duration: item.duration / 3600
-                }
-              })}
+              data={realDurationPerDayInHours}
               x="day"
               y="duration"
               style={{
