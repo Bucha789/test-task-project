@@ -50,6 +50,7 @@ export const tasksSlice = createSlice({
       state.addedTasks.push({
         completed: false,
         createdAt: new Date().toISOString(),
+        // we just set the type of the task based on the duration of the task, to show a different color in the task list
         type: getTaskType(duration),
         description,
         duration,

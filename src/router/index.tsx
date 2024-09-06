@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import { App } from "../App"
 import { Dashboard } from "../pages/Dashboard"
 import { Analytics } from "../pages/Analytics"
@@ -13,6 +13,7 @@ export const Router = () => {
           <Route index element={<Dashboard />} />
           <Route path="tasks" element={<Dashboard />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="*" element={<Navigate to='/tasks' />} />
         </Route>
       </Routes>
     </BrowserRouter>
