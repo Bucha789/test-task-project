@@ -4,6 +4,11 @@ import { Task } from "../store/slices/tasksSlice";
 import { v4 as uuidv4 } from 'uuid';
 import { LONG_TIME, MEDIUM_TIME, SHORT_TIME } from "../constants";
 
+/**
+ * @description This function generates a random number of tasks with faker js library
+ * @param n number of tasks to generate
+ * @returns array of tasks given the number of tasks
+ */
 export const generateTasks = (n: number) => {
   const tasks = [];
   for (let i = 0; i < n; i++) {
