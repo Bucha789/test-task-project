@@ -8,7 +8,7 @@ export const App = () => {
   const tasks = useAppSelector(state => state.tasks);
   const timer = useAppSelector(state => state.timer);
 
-
+  //To persist the tasks and the current task in the local storage
   useEffect(() => {
     const saveData = () => {
       localStorage.clear()

@@ -4,7 +4,7 @@ import { LONG_TIME, MEDIUM_TIME, SHORT_TIME } from '../../constants'
 type Props = {
   onClick: (time: number) => () => void
 }
-
+// This component is used in the EditTaskForm and CreateTaskForm component to manage the default buttons for the task duration
 export const DefaultButtons = ({ onClick }: Props) => {
   return (
     <ButtonGroup className="bg-transparent">

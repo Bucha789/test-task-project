@@ -7,14 +7,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "create-tasks": "node ./src/script.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
     "@types/node": "^22.5.3",
     "@types/uuid": "^10.0.0",
     "bootstrap": "^5.3.3",
-    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",

@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import './index.css';
 
+//importing the dayjs plugin to have the relative time with dayjs like "2 hours ago"
 dayjs.extend(relativeTime);
 
 const node = document.getElementById("root");

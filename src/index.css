@@ -3,7 +3,9 @@
   position: relative;
   padding: 2rem 0;
 }
-
+/*
+  Background colors for cards
++*/
 .bg-short {
   background-color: #0dab76;
 }

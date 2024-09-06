@@ -24,22 +24,26 @@ const initialState: FormState = {
     seconds: 0
   }
 }
-
+// This component is used in the TaskForm component to manage the form to create a task
+// It uses the DefaultButtons and TimeInputs components
+// It's located in the main part of the application
 export const CreateTaskForm = () => {
   const [formState, setFormState] = useState<FormState>(initialState);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const { time } = formState;
 
+  // This function is used to handle the form state
   const handleChangeValues = (event: ChangeEvent<HTMLInputElement>) => {
     setFormState({
       ...formState,
       [event.target.name]: event.target.value
     })
   }
-
+  //This function is used to handle the form state
   const handleSubmitValues: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
+    // We need to convert the time to seconds to store it in the database
     const duration = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
     dispatch(create({
       description: formState.description,
@@ -78,21 +82,24 @@ export const CreateTaskForm = () => {
   }
 
   const handleErrors = useCallback(() => {
+    // The task is using the time in seconds, so we need to convert the time to seconds
     const currentSeconds = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
+    //We need to check if the time is less than 2 hours
     if (currentSeconds > MAX_TIME_ALLOWED) {
       return setError('Duration must be less than 2 hours')
     }
+    // Or if the time is less than 0
     if (currentSeconds < 0) {
       return setError('Duration must be greater than 0')
     }
-
+    // We need to check if the description and the time are filled
     if (!currentSeconds || !formState.description) {
       return setError('Description and duration are required')
     }
 
     setError(null)
   }, [formState])
-
+  //TODO: Check if we can avoid this useEffect
   useEffect(() => {
     handleErrors()
   }, [handleErrors])

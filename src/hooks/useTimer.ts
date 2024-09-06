@@ -7,7 +7,8 @@ type TimerOptions = {
   onChangeTimer?: (duration: number) => void
   playSound?: boolean
 }
-
+//This hook pretended to be used in the Timer component to manage the timer state
+//But it was never used in the project because I needed to manage the timer state in the global state
 export const useTimer = (durationInSeconds: number, options?: TimerOptions) => {
   const [time, setTime] = useState(durationInSeconds);
   const [isRunning, setIsRunning] = useState(false);

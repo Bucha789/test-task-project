@@ -4,8 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { getTaskType } from '../../utils/tasks';
 import { transformToObj } from '../../utils';
 
+// Define a type for the slice state
 export type TaskType = 'short' | 'medium' | 'long' | 'custom'
-
+// Define a type for the task object. It's used to represent every task in the store
 export type Task = {
   id: string
   description: string
@@ -19,28 +20,26 @@ export type Task = {
   type: TaskType
 }
 
-
+// Define a type for the current task. It's used to represent the task that is currently running
 export type CurrentTask = Task & {
   currentDuration: number
 }
-
+// Some picks to make the code more readable and maintainable 
 export type TaskInput = Pick<Task, 'description' | 'duration'>
-
 export type TaskId = Pick<Task, 'id'>
-
 export type TaskModify = Pick<Task, 'id' | 'description' | 'duration'>
 
 export type TasksState = {
   addedTasks: Task[]
 }
-
-
+//Get the saved tasks from the local storage
 const savedTasks = localStorage.getItem('addedTasks');
 
 
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
+    // if there are saved tasks, we transform them to an object, otherwise we set it to an empty array
     addedTasks: transformToObj<Task[], Task[]>(savedTasks, []),
   },
   reducers: {
@@ -78,6 +77,7 @@ export const tasksSlice = createSlice({
       if (task) {
         task.completed = true
         task.completedAt = new Date().toISOString()
+        // calculate the time that the task took to be completed and added it to the task to calculate some process later
         task.completedTime = task.duration - action.payload.duration
       }
     },

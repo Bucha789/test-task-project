@@ -6,23 +6,30 @@ import { groupTasksByDate } from "../utils/tasks";
 import dayjs from "dayjs";
 
 
-
+// The Analytics component is the page that shows the analytics of the tasks
+// This page just renders the some tables. I think we could add something else or change the whole page
+// but in the requirements it's just to show the analytics
 export const Analytics = () => {
   const tasks = useAppSelector(state => state.tasks.addedTasks);
+  // Sort the tasks by createdAt date to manipulate the data easily
   const sortedTasks = tasks.slice().sort((a, b) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix());
+  // Group the tasks by day to show the data in a better
   const tasksGroupedByDay = groupTasksByDate(sortedTasks);
+  // Calculate the total duration of the tasks per day
   const totalDurationPerDay = Object.keys(tasksGroupedByDay).map(day => {
     return {
       day,
       duration: tasksGroupedByDay[day].reduce((acc, item) => acc + item.duration, 0)
     }
   })
+  // Calculate the real duration of the tasks per day. You can complete the task before the time ends so the real duration is different from the duration
   const realDurationPerDay = Object.keys(tasksGroupedByDay).map(day => {
     return {
       day,
       duration: tasksGroupedByDay[day].reduce((acc, item) => acc + (item?.completedTime || 0), 0)
     }
   });
+  // Convert the duration from seconds to hours to show the data in a better way
   const totalDurationPerDayInHours = totalDurationPerDay.map(item => {
     return {
       day: item.day,
@@ -30,6 +37,7 @@ export const Analytics = () => {
     }
   })
 
+  // If there are no tasks added yet show a message with indications
   if (Object.keys(tasksGroupedByDay).length === 0) {
     return (
       <Container className="mb-5 py-5">
@@ -43,7 +51,7 @@ export const Analytics = () => {
       </Container>
     )
   }
-
+  // Show the analytics. Three tables with the data of the tasks
   return (
     <Container className="mb-5 py-5">
       <Card className="p-4 mb-4">
