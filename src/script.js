@@ -1,8 +1,13 @@
-const fs = require('fs');
-const path = require('path');
-const { faker } = require('@faker-js/faker');
-const { v4: uuidv4 } = require('uuid');
-const dayjs = require('dayjs');
+import dayjs from 'dayjs';
+import fs from 'fs';
+import path, { dirname } from 'path';
+import { faker } from '@faker-js/faker';
+import { v4 as uuidv4 } from 'uuid';
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const LONG_TIME = 3600; // 1 hour
 const MEDIUM_TIME = 2700; // 45 minutes
