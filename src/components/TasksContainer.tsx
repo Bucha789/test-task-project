@@ -22,13 +22,11 @@ export const TaskListContainer = () => {
   // Filter the tasks by duration to show the tasks in a better way
   const [filterByDuration, setFilterByDuration] = useState<'short' | 'medium' | 'long' | null>(null);
   // Change the view between list and card
-  // I know that there's a prop that causes the prop drilling anti-pattern but I think it's not a big deal in this case
-  // According to certain requirements that need a better understanding of the project 
-  // We could change this and add a state for the views(example)
+  // There's a prop that causes the prop drilling anti-pattern to avoid it we could use a context or a global state.
+  // We could change this and add a stateReducer for the views(example)
   const [view, setView] = useState<'card' | 'list'>('list');
   // Sort the tasks by createdAt date to manipulate the data easily
-  // I think we could add a selector to sort the tasks in the store to avoid sorting the tasks in the component
-  // But I think it's not a big deal in this case becase is done just twice in the app
+  // We could add a selector to sort the tasks in the store to avoid sorting the tasks in the component if we want to reuse this logic
   const sortedTasks = addedTasks.slice().sort((a, b) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix());
   // Filter the tasks by duration
   const filteredTasks = filterByDuration ? filterTasksByDuration(sortedTasks, filterByDuration) : sortedTasks;

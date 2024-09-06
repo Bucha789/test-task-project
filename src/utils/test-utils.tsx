@@ -7,6 +7,7 @@ import { setupStore } from '../store'
 import type { AppStore, RootState } from '../store'
 import { BrowserRouter } from 'react-router-dom'
 
+// This function is used to render the app with the store and BrowserRouter to avoid creating the store in every test
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {

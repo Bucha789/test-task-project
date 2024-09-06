@@ -8,6 +8,12 @@ type Props = {
   text: string
 }
 
+// This component is used to show an alert modal
+// it receives the show, handleClose, title and text props
+// title is the title of the modal and text is the text to be shown
+// the handleClose function is used to close the modal when the user clicks the button
+// the show prop is used to show the modal
+// We could move the button text to a prop to make it more flexible
 export const AlertModal = ({
   show,
   handleClose,
@@ -20,7 +26,7 @@ export const AlertModal = ({
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-       {text}
+        {text}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleClose}>

@@ -68,7 +68,7 @@ export const Timer = () => {
   }
 
   // This effect is responsible for changing the document title to show the current task time
-  // This could be part of the timerReducer, but I decided to put it here to avoid conflicts and make the timer reducer simpler
+  // This could be part of the timerReducer
   useEffect(() => {
     if (currentTask) {
       document.title = `Focus 🚀 - ${transformTimeToDisplay(currentTask.currentDuration
@@ -84,7 +84,7 @@ export const Timer = () => {
   }, [currentTask, dispatch])
 
   //If there is a current task, it shows the task description and the timer controls
-  //If there is no current task, it shows a message to create a task
+  //If there is not a current task, it shows a message to create a task
   return currentTask ? (
     <div>
       <Row>

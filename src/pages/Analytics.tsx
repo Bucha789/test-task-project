@@ -6,9 +6,8 @@ import { groupTasksByDate } from "../utils/tasks";
 import dayjs from "dayjs";
 
 
-// The Analytics component is the page that shows the analytics of the tasks
-// This page just renders the some tables. I think we could add something else or change the whole page
-// but in the requirements it's just to show the analytics
+// This page renders information about the tasks. 
+// I think we could add something else or change the whole page to show more information
 export const Analytics = () => {
   const tasks = useAppSelector(state => state.tasks.addedTasks);
   // Sort the tasks by createdAt date to manipulate the data easily
@@ -36,14 +35,14 @@ export const Analytics = () => {
       duration: item.duration / 3600
     }
   })
-
+  // Convert the real duration from seconds to hours to show the data in a better way
   const realDurationPerDayInHours = realDurationPerDay.map(item => {
     return {
       day: item.day,
       duration: item.duration / 3600
     }
   })
-
+  // Calculate the total tasks completed per day
   const completedTasksPerDay = Object.keys(tasksGroupedByDay).map(day => {
     return {
       day,

@@ -8,7 +8,9 @@ export const App = () => {
   const tasks = useAppSelector(state => state.tasks);
   const timer = useAppSelector(state => state.timer);
 
-  //To persist the tasks and the current task in the local storage
+  // To persist the tasks and the current task in the local storage
+  // We use the beforeunload event to save the data before the page is closed
+  // We could use an API to save the data in a server
   useEffect(() => {
     const saveData = () => {
       localStorage.clear()

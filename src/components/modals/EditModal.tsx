@@ -22,20 +22,25 @@ const initialState = {
   }
 }
 
+// This component is used to show a modal to edit a task
+// it receives the show, handleClose and taskId props
 export const EditModal = ({ show, handleClose, taskId }: Props) => {
+  const dispatch = useAppDispatch();
   const addedTasks = useAppSelector(state => state.tasks.addedTasks);
   const [error, setError] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
   const task = addedTasks.find(task => task.id === taskId);
+  // Get the task to edit
   const taskToEdit = task ? {
     description: task.description,
     time: getTimeFromSeconds(task.duration)
   } : initialState;
+  // use the task to edit as the initial state of the form
   const [formState, setFormState] = useState<FormState>(taskToEdit);
 
   
   
   // This function is used to handle the errors in the form
+  // We could move this function to a helper file to avoid code duplication
   const handleErrors = useCallback(() => {
     // The task is using the time in seconds, so we need to convert the time to seconds
     const currentSeconds = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;
@@ -57,6 +62,7 @@ export const EditModal = ({ show, handleClose, taskId }: Props) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const error = handleErrors();
+    // If there is an error, we set the error state and stop the function
     if (error) {
       return setError(error);
     }
@@ -67,9 +73,8 @@ export const EditModal = ({ show, handleClose, taskId }: Props) => {
     }))
     handleClose();
   }
-  
+  // If there is no task, we return null
   if (!task) return null;
-
   return (
     <Modal show={show} onHide={handleClose}>
       <Form onSubmit={handleSubmit}>

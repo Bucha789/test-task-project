@@ -13,6 +13,20 @@ const LONG_TIME = 3600; // 1 hour
 const MEDIUM_TIME = 2700; // 45 minutes
 const SHORT_TIME = 1800; // 30 minutes
 
+/**
+ * 
+ * @param {number} n - number of tasks to generate 
+ * @returns {{
+ *  id: string,
+ *  description: string,
+ *  completedTime: number,
+ *  completed: boolean,
+ *  duration: number,
+ *  type: string,
+ *  createdAt: string,
+ *  completedAt: string
+ * }[]} - an array of tasks
+ */
 const generateTasks = (n) => {
   const tasks = [];
   for (let i = 0; i < n; i++) {
@@ -57,4 +71,3 @@ if (!fileExits) {
 
 fs.writeFileSync(path.join(directoryPath, 'tasks.json'), json);
 console.log('JSON file has been saved.');
-
