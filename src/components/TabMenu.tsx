@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom';
 
-//This is a simple component to navigate between the tasks and analytics pages
-//It's a simple nav with two links
+// This is a simple component to navigate between the tasks and analytics pages
+// It's a nav with two links
 export const TabMenu = () => {
-  //Function that tries to implement the DRY principle
+  //Get the active class based on the current page
   const getActiveClass = (isActive: boolean) => {
     return isActive ? 'nav-link active' : 'nav-link';
   }

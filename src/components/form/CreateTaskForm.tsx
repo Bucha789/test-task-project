@@ -41,6 +41,7 @@ export const CreateTaskForm = () => {
     })
   }
   
+  // This function is used to handle the default buttons for the task duration
   const handleClickDefaultButtons = (seconds: number) => () => {
     if (seconds === HOURS_IN_SECONDS) {
       return setFormState({
@@ -69,7 +70,8 @@ export const CreateTaskForm = () => {
       }
     })
   }
-  
+  // This function is used to handle the errors in the form
+  // We could move this function to a helper file to avoid code duplication
   const handleErrors = useCallback(() => {
     // The task is using the time in seconds, so we need to convert the time to seconds
     const currentSeconds = formState.time.hours * HOURS_IN_SECONDS + formState.time.minutes * MINUTES_IN_SECONDS + formState.time.seconds;

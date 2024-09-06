@@ -62,7 +62,7 @@ export const startGlobalTimer = () => (dispatch: Dispatch, getState: () => RootS
     }
   }, 1000);
 };
-// Stop the global timer. this could not be necessary, but if we need to call more actions when the timer stops, we can do it here
+// Stop the global timer. This could not be necessary, but if we need to call more actions when the timer stops, we can do it here
 export const stopGlobalTimer = () => (dispatch: Dispatch) => {
   dispatch(stop());
 };

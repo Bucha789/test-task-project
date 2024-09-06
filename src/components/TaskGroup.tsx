@@ -8,7 +8,7 @@ type Props = {
   view: 'list' | 'card'
 }
 
-//This component is responsible for displaying a group of tasks
+// This component is responsible for displaying a group of tasks
 // It uses the TaskItem component to display each task
 export const TaskGroup = ({ tasks, view }: Props) => {
   const dispatch = useAppDispatch();
@@ -23,7 +23,7 @@ export const TaskGroup = ({ tasks, view }: Props) => {
       dispatch(startGlobalTimer())
     }
   }
-  // I think we could avoid code using the spread operator to pass the props to the TaskItem component
+  // We could avoid code using the spread operator to pass the props to the TaskItem component
   const renderTask = (task: Task) => (<TaskItem
     key={task.id}
     description={task.description}
