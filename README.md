@@ -67,4 +67,4 @@ If you want to add more tasks, you can modify the `src/script.js` file and run t
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
+
