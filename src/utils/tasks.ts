@@ -50,7 +50,7 @@ export const filterTasksByDuration = (tasks: Task[], duration: string) => {
  * @example groupTasksByDate(tasks) // { "2021-09-01": [task1, task2], "2021-09-02": [task3, task4] }
  */
 export const groupTasksByDate = (tasks: Task[]) => {
-  return tasks.reduce((acc, item) => {
+  return tasks.slice().reduce((acc, item) => {
     const date: string = dayjs(item.createdAt).format('YYYY-MM-DD') || 'unknown'
 
     if(!acc[date]) {

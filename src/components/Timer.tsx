@@ -78,8 +78,9 @@ export const Timer = () => {
       document.title = 'Time is up!'
       // It also plays an audio when the time is up
       reproduceAudio(audio);
+      // first  markAsCompleted and then cleanTaskInTimer
+      dispatch(markAsCompleted({ id: currentTask.id, duration: currentTask.currentDuration }));
       dispatch(cleanTaskInTimer())
-      dispatch(markAsCompleted({ id: currentTask.id, duration: currentTask.duration }))
     }
   }, [currentTask, dispatch])
 
