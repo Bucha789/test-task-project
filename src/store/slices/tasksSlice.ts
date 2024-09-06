@@ -59,11 +59,17 @@ export const tasksSlice = createSlice({
     modify: (state, action: PayloadAction<TaskModify>) => {
       //modify an existing task
       const { id, description, duration } = action.payload;
-      const task = state.addedTasks.find((task) => task.id === id);
-      if (task) {
-        task.description = description;
-        task.duration = duration;
-      }
+      state.addedTasks = state.addedTasks.map((task) => {
+        if (task && task.id === id) {
+          return {
+            ...task,
+            description,
+            duration,
+            type: getTaskType(duration)
+          }
+        }
+        return task
+      })
     },
     remove: (state, action: PayloadAction<TaskId>) => {
       //delete an existing task
@@ -73,13 +79,18 @@ export const tasksSlice = createSlice({
       duration: number
     }>) => {
       //mark as completed a task
-      const task = state.addedTasks.find((task) => task.id === action.payload.id);
-      if (task) {
-        task.completed = true
-        task.completedAt = new Date().toISOString()
-        // calculate the time that the task took to be completed and added it to the task to calculate some process later
-        task.completedTime = task.duration - action.payload.duration
-      }
+      state.addedTasks = state.addedTasks.map((task) => {
+        if (task && task.id === action.payload.id) {
+          return {
+            ...task,
+            completed: true,
+            completedAt: new Date().toISOString(),
+            // calculate the time that the task took to be completed and added it to the task to calculate some process later
+            completedTime: task.duration - action.payload.duration
+          }
+        }
+        return task
+      })
     },
   },
 })
