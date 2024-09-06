@@ -39,10 +39,14 @@ Project Website: [Countdown Timer](https://main--arkon-data-test.netlify.app/)
 - Git installed
 
 ## How to run
-1. Clone the repository
+1. Clone the repository and open the project folder
 2. Run `npm install`
 3. Run `npm run dev`
 4. Open your browser and go to `http://localhost:5173/`
+
+## How to run tests
+1. Run the command `npm run test`
+2. To see the coverage, run the command `npm run coverage`
 
 ## How to create fake data
 1. Run the command `npm run create-tasks`
