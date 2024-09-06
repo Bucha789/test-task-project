@@ -81,9 +81,6 @@ export const tasksSlice = createSlice({
         task.completedTime = task.duration - action.payload.duration
       }
     },
-    loadInitialState: (state, action: PayloadAction<TasksState>) => {
-      state.addedTasks = action.payload.addedTasks
-    },
   },
 })
 

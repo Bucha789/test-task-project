@@ -38,9 +38,6 @@ const timerSlice = createSlice({
     cleanTaskInTimer: (state) => {
       state.task = null;
       state.isRunning = false;
-    },
-    loadInitialState: (state, action: PayloadAction<TaskTimerState>) => {
-      state.isRunning = action.payload.isRunning;
     }
   },
 });

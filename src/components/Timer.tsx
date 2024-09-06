@@ -54,7 +54,6 @@ export const Timer = () => {
     dispatch(cleanTaskInTimer());
   }
 
-  console.log(currentTask, isRunning, isPaused, isStopped)
   useEffect(() => {
     if (currentTask) {
       document.title = `Focus 🚀 - ${transformTimeToDisplay(currentTask.currentDuration
