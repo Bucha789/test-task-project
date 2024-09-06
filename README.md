@@ -17,7 +17,7 @@ This project pretends to create a countdown timer that can be used in different 
 4. Open your browser and go to `http://localhost:5173/`
 
 ## How to create fake data
-1. Run `npm run create-tasks`
+1. Run the command `npm run create-tasks`
 2. Go to `src/store/slices/tasksSlice.ts` file and change the `tasks` variable to the value of the `tasks.json` file
   ```typescript
     import tasks from '../../database/tasks.json'
@@ -30,4 +30,9 @@ This project pretends to create a countdown timer that can be used in different 
       ...
   })
   ```
-3. Run `npm run dev` to see the changes
+3. Run `npm run dev` command to see the changes
+
+If you want to add more tasks, you can modify the `src/script.js` file and run the `npm run create-tasks` command again.
+  ```javascript
+    const array = generateTasks(50); // Change the number to the amount of tasks you want to generate
+  ```
