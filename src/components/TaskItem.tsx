@@ -52,7 +52,7 @@ export const TaskItem = ({ description, duration, id, taskType, initializeTimer,
     }
     dispatch(remove({ id }))
   }
-  //This function is responsible for editing the task
+  // This function is responsible for editing the task
   // if there is a task running and the user wants to edit the same task, it shows an alert modal to avoid conflicts with the flow
   const handleEditTask = () => {
     if (currentTask && currentTask.id === id) {
