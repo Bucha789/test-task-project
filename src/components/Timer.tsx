@@ -95,19 +95,19 @@ export const Timer = () => {
         <Col sm={12} md={5} xl={3} className="my-2 mx-3">
           <Stack direction="horizontal" gap={3} className="flex-wrap">
             <div>{transformTimeToDisplay(currentTask.currentDuration)}</div>
-            <Button onClick={handleCompleteTask} variant='success'>
+            <Button onClick={handleCompleteTask} variant='success' data-testid='complete-button'>
               <BsCheck />
             </Button>
             {
               !isStopped ? (<Button onClick={handlePauseTask} variant='primary'>
                 {
-                  isPaused ? <BsPlayFill /> : <BsFillPauseFill />
+                  isPaused ? <BsPlayFill data-testid={'play-button'} /> : <BsFillPauseFill data-testid='pause-button' />
                 }
-              </Button>) : (<Button variant="warning" onClick={handleCleanTask}>
+              </Button>) : (<Button variant="warning" data-testid='trash-button' onClick={handleCleanTask}>
                 <BsFillTrashFill />
               </Button>)
             }
-            <Button onClick={handleStopTask} variant='danger' disabled={isStopped}>
+            <Button onClick={handleStopTask} variant='danger' disabled={isStopped} data-testid="stop-button">
               <BsStopFill />
             </Button>
             <Button onClick={handleRestartTimer} variant="secondary" disabled={!isRunning || isPaused}>
