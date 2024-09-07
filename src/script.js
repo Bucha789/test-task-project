@@ -59,7 +59,7 @@ const generateTasks = (n) => {
 }
 
 // generate 50 tasks
-const array = generateTasks(100);
+const array = generateTasks(50);
 const json = JSON.stringify(array, null, 2);
 
 const directoryPath = path.join(__dirname, 'database');

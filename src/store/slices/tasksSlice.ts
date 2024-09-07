@@ -35,7 +35,6 @@ export type TasksState = {
 //Get the saved tasks from the local storage
 const savedTasks = localStorage.getItem('addedTasks');
 
-
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
