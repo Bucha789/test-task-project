@@ -13,7 +13,6 @@ export const App = () => {
   // We could use an API to save the data in a server
   useEffect(() => {
     const saveData = () => {
-      localStorage.clear()
       localStorage.setItem('addedTasks', JSON.stringify(tasks.addedTasks))
       localStorage.setItem('task', JSON.stringify(timer.task))
     }
